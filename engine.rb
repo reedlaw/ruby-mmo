@@ -40,11 +40,11 @@ end
   game.proxies << r
 end
 
-if ARGV.size > 1 and ARGV[0] == "-t" and ARGV[1] =~ /^[1-9]\d*$/
+if ARGV.size > 1 and ARGV[0] == "-r" and ARGV[1] =~ /^[1-9]\d*$/
   ARGV.shift
-  turn_count = ARGV.shift.to_i
+  rount_count = ARGV.shift.to_i
 else
-  turn_count = 10
+  rount_count = 10
 end
 
-game.turn(turn_count)
+game.round(rount_count)

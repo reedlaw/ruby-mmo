@@ -10,8 +10,8 @@ class Game
     @proxies = []
   end
   
-  def turn(rounds)
-    rounds.times do |i|
+  def round(count)
+    count.times do |i|
       p "Round #{i}"
       update_world
       @players.each do |p|
