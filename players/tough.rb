@@ -1,7 +1,12 @@
 module Tough
   def move
-    opponent = Game.world[:players].select {|p| p != self.proxy }.first
-    [:fight, opponent]
+    player_count = Game.world[:players].count
+    opponent = Game.world[:players].select{|p|p != self}[rand(player_count - 1)]
+    if opponent.alive
+      [:attack, opponent]
+    else
+      [:rest]
+    end
   end
 
   def to_s

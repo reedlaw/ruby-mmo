@@ -1,6 +1,12 @@
 module RandomPlayer
   def move
-    [[:trade, 2], [:travel, 3]][rand(2)]
+    player_count = Game.world[:players].count
+    opponent = Game.world[:players].select{|p|p != self}.first
+    if opponent.alive
+      [[:rest], [:attack, opponent]][rand(2)]
+    else
+      [:rest]
+    end
   end
 
   def to_s
