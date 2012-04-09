@@ -4,6 +4,7 @@ class Player
 
   def initialize
     @health = 100
+    @max_health = 100
     @level = 0
     @strength = 20
     @defense = 20
@@ -25,14 +26,20 @@ class Player
     end
   end
 
-  def rest
-    @health = 100
+  def rest(arg)
+    if @health <= @max_health
+      @health = @health + 10
+    end
+    if @health > @max_health
+      @health = @max_health
+    end
   end
 
   def suffer_damage(points)
     if caller_method_name == "attack"
       @health = @health - points
       if @health <= 0
+        puts "#{proxy} has died."
         @alive = false 
         @health = 0
       end

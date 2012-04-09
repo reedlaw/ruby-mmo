@@ -8,7 +8,7 @@ How to play
 
 Fork this repo and commit a module inside the `/players` directory. The module is then used to extend a player object with a couple of methods:
 
-1. `move` returns an array with two elements: the method to be called (can be one of `:attack` or `:rest`), and the method arguments. In the case of `:attack` the argument should be an instance of an opponent Player (see below for how to get this). In the case of `:rest`, no argument is required. See the examples in the `/players` directory.
+1. The `move` method returns an array with two elements: the method to be called (can be one of `:attack` or `:rest`), and the method arguments. In the case of `:attack` the argument should be an instance of an opponent Player (see below for how to get this). In the case of `:rest` no argument is required. See the examples in the `/players` directory.
 
 2. `to_s` (optional) returns the name of the player.
 
@@ -20,6 +20,8 @@ The player modules have access to the `Game.world` hash. This hash contains all 
     player_count = Game.world[:players].count
     opponent = Game.world[:players].select{|p|p != self}[rand(player_count - 1)]
     opponent.stats
+
+The `select` is to ensure the player is not fighting itself.
 
 There is also a method `alive` that returns false if the player is dead.
 

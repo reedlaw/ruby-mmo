@@ -12,11 +12,12 @@ class Game
   
   def round(count)
     count.times do |i|
-      p "Round #{i}"
+      puts "Round #{i}"
       update_world
       @players.each do |p|
         if p.alive == false
           @players.delete(p)
+          @proxies.delete(p.proxy)
           next
         end
         unless p.kind_of? Monster
@@ -27,23 +28,14 @@ class Game
             prep = " "
             o = move.last
             object = @players.select {|p|p.proxy == o}.first
-
-            if object.nil?
-              debugger
-            end
-
-
-            p.attack(object)
           when :rest
-            p.rest
             prep = ""
             o = ""
-          when :travel
-            prep = " to "
           else
             prep = " with "
           end
-          p "#{p.proxy} #{m}s#{prep}#{o}. #{p.stats}"
+          puts "#{p.proxy} #{m}s#{prep}#{o}."
+          p.send(m, object)
         end
       end
     end
@@ -51,6 +43,8 @@ class Game
     @proxies.sort_by(&:to_s).each do |p|
       puts "#{p}: #{p.stats}"
     end
+    winner = @proxies.inject(@proxies[0]) {|max, item| item.stats[:experience] > max.stats[:experience] ? item : max }
+    puts "#{winner} is the winner!"
   end
 
   private
