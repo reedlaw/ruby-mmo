@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="078c692a-88a4-47e3-ac59-4f101fc87ba9" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/engine/game.rb" afterPath="$PROJECT_DIR$/engine/game.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/players/michael.rb" afterPath="$PROJECT_DIR$/players/michael.rb" />
     </list>
     <ignored path="ruby-mmo.iws" />
@@ -44,12 +43,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="michael.rb" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="michael.rb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/players/michael.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="152" selection-start="300" selection-end="300" vertical-scroll-proportion="0.0">
+            <state line="5" column="18" selection-start="155" selection-end="155" vertical-scroll-proportion="0.08108108">
               <folding>
-                <element signature="e#1014#1310#0" expanded="false" />
+                <element signature="e#1031#1327#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -73,10 +72,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tough.rb" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="tough.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/players/tough.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="101" selection-start="290" selection-end="290" vertical-scroll-proportion="0.24324325">
+            <state line="15" column="98" selection-start="290" selection-end="290" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -125,8 +124,8 @@
         <option value="$PROJECT_DIR$/engine.rb" />
         <option value="$PROJECT_DIR$/engine/player.rb" />
         <option value="$PROJECT_DIR$/players/random.rb" />
-        <option value="$PROJECT_DIR$/players/michael.rb" />
         <option value="$PROJECT_DIR$/engine/game.rb" />
+        <option value="$PROJECT_DIR$/players/michael.rb" />
       </list>
     </option>
   </component>
@@ -445,15 +444,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/players/michael.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="152" selection-start="300" selection-end="300" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#1014#1310#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/players/jurek.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="17" column="63" selection-start="465" selection-end="465" vertical-scroll-proportion="0.0">
@@ -470,8 +460,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/players/tough.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="101" selection-start="290" selection-end="290" vertical-scroll-proportion="0.24324325">
+        <state line="15" column="98" selection-start="290" selection-end="290" vertical-scroll-proportion="0.0">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/players/michael.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="18" selection-start="155" selection-end="155" vertical-scroll-proportion="0.08108108">
+          <folding>
+            <element signature="e#1031#1327#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

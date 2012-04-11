@@ -1,16 +1,16 @@
-module ZMichael
+module AMichael
   def move
     player_count = Game.world[:players].count
     opponent = least_health_opponent
     leader = current_leader
-
+              git
     case
       when ((opponent.stats[:health] + (opponent.stats[:defense]/2)) <  self.stats[:strength]) && self.stats[:experience] <= leader.stats[:experience]+200
         [:attack,opponent]
-      when self.stats[:health] < 100
-        [:rest]
       when player_count == 2 && self.stats[:health] > opponent.stats[:health]
         [:attack, opponent]
+      when self.stats[:health] < 100
+        [:rest]
       else
         [:rest]
     end
