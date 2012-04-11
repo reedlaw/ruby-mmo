@@ -6,6 +6,8 @@ module EricTheKillSteal
   def move
     return [:attack, killable_opponents.first] unless killable_opponents.empty?  
 
+    return [:attack, opponents.first] if opponents.size == 1 || stats[:health] >= 100
+
     [:rest]
   end
 
