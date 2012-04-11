@@ -1,11 +1,10 @@
-module Shannon
+module ATabbyCat
   def to_s
     'A Tabby Cat'
   end
   
   def move
     @opponent = select_opponent
-    
     advantage? ? [:attack, @opponent] : [:rest]
   end
   
