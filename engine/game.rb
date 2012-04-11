@@ -45,8 +45,16 @@ class Game
       end
       # Finish if there is only one player
       break if @players.size == 1
+
+      puts "Stats:"
+      @proxies.sort_by { |p| [-p.stats[:experience], p.to_s] }.each do |p|
+          puts "\t#{p}: #{p.stats}"
+      end
+      puts 
     end
+    puts 
     puts "Results:"
+    puts "--------"
     @proxies.sort_by { |p| [-p.stats[:experience], p.to_s] }.each do |p|
       puts "#{p}: #{p.stats}"
     end
