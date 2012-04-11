@@ -12,6 +12,8 @@ class Player
     @alive = true
   end
 
+
+  #the attack move
   def attack(opponent)
     if opponent.class == Player || opponent.class == Monster
       points = @strength - opponent.defense/2
@@ -26,6 +28,7 @@ class Player
     end
   end
 
+   #the rest move
   def rest(arg)
     if @health <= @max_health
       @health = @health + 10
@@ -35,6 +38,7 @@ class Player
     end
   end
 
+  #this is called when the player is the object of another player's attack
   def suffer_damage(points)
     if caller_method_name == "attack"
       @health = @health - points
