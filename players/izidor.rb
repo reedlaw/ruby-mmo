@@ -70,7 +70,7 @@ module Izidor
     # - minimal defense (they are easier to kill)
     # - bigger strength (more dangeorous)
     def choose_enemey_to_attack(enemies)
-        enemies.sort_by { |p| [p.stats[:health], p.stats[:experince], p.stats[:defense], p.stats[:strength], ] }.first
+        enemies.sort_by { |p| [p.stats[:health], -p.stats[:experience], p.stats[:defense], -p.stats[:strength], ] }.first
     end
 
     # If I take a rest, could they kill me?
