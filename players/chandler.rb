@@ -1,5 +1,5 @@
 module Chandler
-  ONCE_OF_STRENGTH = 50
+  OUNCE_OF_STRENGTH = 50
   def to_s
     "*No rest for the wicked*"
   end
@@ -13,7 +13,7 @@ module Chandler
   end
   
   def ounce_of_strength_left_in_me?
-    stats[:health] >= ONCE_OF_STRENGTH
+    stats[:health] >= OUNCE_OF_STRENGTH
   end
   
   def most_wicked_player
