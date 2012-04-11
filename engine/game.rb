@@ -10,27 +10,23 @@ class Game
     @proxies = []
   end
 
-
-  #This is the method that actually calculates the game and implements the rounds
   def round(count)
 
 
-    #gameplay
+
     count.times do |i|
       puts "Round #{i}"
       update_world
       @players.each do |p|
 
-        #This goes through and calculates if the player is dead
         if p.alive == false
           @players.delete(p)
           @proxies.delete(p.proxy)
           next
         end
 
-        #This determines a player's attack phase
         unless p.kind_of? Monster
-          move = p.proxy.move #move is actually the player's action, not their physical move.
+          move = p.proxy.move
           m = move.first
           case m
           when :attack
@@ -45,7 +41,7 @@ class Game
           end
           puts "#{p.proxy} #{m}s#{prep}#{o}."
 
-          p.send(m, object) #This invokes the m method in the player class, and invokes that upon object
+          p.send(m, object)
         end
       end
     end

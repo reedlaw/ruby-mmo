@@ -5,7 +5,7 @@ module ZMichael
     leader = current_leader
 
     case
-      when ((opponent.stats[:health] + (opponent.stats[:defense]/2)) <  self.stats[:strength]) && self.stats[:experience] <= leader.stats[:experience]+100
+      when ((opponent.stats[:health] + (opponent.stats[:defense]/2)) <  self.stats[:strength]) && self.stats[:experience] <= leader.stats[:experience]+200
         [:attack,opponent]
       when self.stats[:health] < 100
         [:rest]
