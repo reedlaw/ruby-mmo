@@ -5,7 +5,8 @@ module ATabbyCat
   
   def move
     @opponent = select_opponent
-    if cat_has_advantage?
+    case cat_has_advantage?
+    when true
       [:attack, @opponent]
     else
       [:rest]
@@ -13,7 +14,6 @@ module ATabbyCat
   end
   
   private
-  
   def select_opponent
     rat? || weakest_player
   end
