@@ -13,6 +13,11 @@ class Game
   def round(count)
     count.times do |i|
       puts "Round #{i}"
+      
+      # Make it fair and shuffle players
+      @players.shuffle!
+      @proxies.shuffle!
+
       update_world
       @players.each do |p|
         if p.alive == false
