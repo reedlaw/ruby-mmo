@@ -43,6 +43,8 @@ class Game
           p.send(m, object)
         end
       end
+      # Finish if there is only one player
+      break if @players.size == 1
     end
     puts "Results:"
     @proxies.sort_by { |p| [-p.stats[:experience], p.to_s] }.each do |p|
