@@ -5,8 +5,7 @@ module ATabbyCat
   
   def move
     @opponent = select_opponent
-    case cat_has_advantage?
-    when true
+    if cat_has_advantage?
       [:attack, @opponent]
     else
       [:rest]
@@ -15,7 +14,15 @@ module ATabbyCat
   
   private
   def select_opponent
-    rat? || weakest_player
+    mercy_kill? || rat? || weakest_player
+  end
+  
+  def mercy_kill?
+    players.select { |player| killable? player }.first
+  end
+
+  def killable? player
+    stats[:strength] - (player.stats[:defense] / 2) > player.stats[:health]
   end
   
   def rat?
@@ -31,6 +38,6 @@ module ATabbyCat
   end
   
   def cat_has_advantage?
-    self.stats[:health] > @opponent.stats[:health]
+    stats[:health] > @opponent.stats[:health]
   end
 end
