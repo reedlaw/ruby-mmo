@@ -5,7 +5,11 @@ module ATabbyCat
   
   def move
     @opponent = select_opponent
-    advantage? ? [:attack, @opponent] : [:rest]
+    if cat_has_advantage?
+      [:attack, @opponent]
+    else
+      [:rest]
+    end
   end
   
   private
@@ -18,12 +22,15 @@ module ATabbyCat
     Game.world[:players].select { |p| p.to_s == 'rat' }.first
   end
   
+  def players
+    Game.world[:players].select { |p| p != self }
+  end
+  
   def weakest_player
-    players = Game.world[:players].select { |p| p != self }
     players.min { |a, b| a.stats[:health] <=> b.stats[:health] }
   end
   
-  def advantage?
+  def cat_has_advantage?
     self.stats[:health] > @opponent.stats[:health]
   end
 end
