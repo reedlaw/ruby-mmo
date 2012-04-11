@@ -40,7 +40,7 @@ class Game
       end
     end
     puts "Results:"
-    @proxies.sort_by(&:to_s).each do |p|
+    @proxies.sort_by { |p| [-p.stats[:experience], p.to_s] }.each do |p|
       puts "#{p}: #{p.stats}"
     end
     winner = @proxies.inject(@proxies[0]) {|max, item| item.stats[:experience] > max.stats[:experience] ? item : max }
