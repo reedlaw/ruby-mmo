@@ -39,7 +39,10 @@ class Game
       end
 
       # Setp #2: Rest players
-      rest.each { |p| p.rest(nil) }
+      rest.each do |p|
+        p.rest(nil)
+        puts "#{p.proxy} rests"
+      end
 
       # Step #3: Attacks
 
