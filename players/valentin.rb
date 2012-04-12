@@ -15,7 +15,7 @@ module Valentin
       return [:rest]
     end
 
-    weakest_opponent = opponents.max { |a, b| a.stats[:health] <=> b.stats[:health] }
+    weakest_opponent = opponents.min { |a, b| a.stats[:health] <=> b.stats[:health] }
     return [:attack, weakest_opponent] unless weakest_opponent.nil?
   end
 
