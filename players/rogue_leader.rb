@@ -45,10 +45,5 @@ module RogueLeader
   def horde 
     true
   end
-
-  # Activate countermeasures
-  def alive
-    false
-  end
   
 end
