@@ -2,7 +2,14 @@
 
 last_line = []
 
-1000.times do
+if ARGV.size > 1 and ARGV[0] == "-r" and ARGV[1] =~ /^[1-9]\d*$/
+  ARGV.shift
+  runs = ARGV.shift.to_i
+else
+  runs = 1000
+end
+
+runs.times do
   output = `ruby ./engine.rb`
   last_line.push output.split("\n").last
 end
