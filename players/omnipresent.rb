@@ -11,7 +11,7 @@ module Omnipresent
     return show_fight if (stats[:health] <= DONT_GET_GANGED_UP && current_spot == 0)
 
     #always fight when its a TRUEL!
-    return always_fight if (others.size == 3) && (stats[:health] > DONT_GET_GANGED_UP)
+    return [:attack, others.first] if (others.size == 3) && (stats[:health] > DONT_GET_GANGED_UP)
 
     [:rest]
   end
