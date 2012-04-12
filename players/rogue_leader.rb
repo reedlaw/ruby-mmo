@@ -2,12 +2,16 @@ module RogueLeader
   def to_s
     "Rogue Leader"
   end
+
   def move
-    return [:attack, killable_opponents.select{ |p| health < 30 }.pop] unless killable_opponents.empty?  
-
-    return [:attack, opponents.first] if opponents.size == 1 || health >= 100
-
-    [:rest]
+    action = if killable_opponents.any?
+                [:attack, killable_opponents.select{ |p| health < 30 }.first]
+             elsif opponents.size == 1 || health >= 100
+                [:attack, opponents.first]
+             else
+               [:rest]
+             end
+    action 
   end
 
   private
@@ -17,7 +21,11 @@ module RogueLeader
   end 
   
   def opponents
-    Game.world[:players].select{ |p| p != self }
+    Game.world[:players].select { |p| p != self }
+  end
+
+  def players
+    Game.world[:players].select { |p| p.to_s != "rat" }
   end
 
   def killable_opponents
@@ -26,16 +34,21 @@ module RogueLeader
 
   def can_kill?(player)
     points = stats[:strength] - (player.stats[:defense] / 2)
-    player.stats[:health] <= points
+    player.stats[:health] <= points && player.alive
   end
 
   def faction
     :rogue_squadron
   end
 
-  def attack_pattern_delta(player)
+  # IFF Horde
+  def horde 
+    true
   end
 
-  def radar_sweep
+  # Activate countermeasures
+  def alive
+    false
   end
+  
 end
