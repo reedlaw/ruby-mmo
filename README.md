@@ -25,6 +25,12 @@ The `select` is to ensure the player is not fighting itself.
 
 There is also a method `alive` that returns false if the player is dead.
 
+Rules
+-----
+
+1. No cheating by overriding classes or instance variables.
+2. Cheating players will be moved to the cheaters/ directory.
+
 Running the simulation
 ----------------------
 
@@ -33,4 +39,19 @@ Running the simulation
 Winning
 -------
 
-The player with the highest level and experience wins.
+The player with the highest level and experience wins. 
+
+Winners
+-------
+
+The game can be run 1000 times using `./multi_run.rb`
+
+On it's last run these were the results:
+
+    Eric the Kill Steal won 272 times
+    strax won 247 times
+    A Tabby Cat won 226 times
+    Ian Terrell won 185 times
+    Valentin won 39 times
+    Izidor won 21 times
+    *No rest for the wicked* won 10 times
