@@ -11,4 +11,3 @@ module Jack
     "Jack"
   end
 end
-
