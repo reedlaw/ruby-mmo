@@ -5,9 +5,14 @@ module Kabutomushi
 
   def move
     return kill_rat if rats_are_alive?
-    return deliver_killing_blow if someone_is_killable?
+    return deliver_killing_blow if d6 > 4 && someone_is_killable?
+    return rest if people_are_passive?
     return attack strongest_player if healthy?
     rest
+  end
+
+  def horde
+    true
   end
 
   private
@@ -44,7 +49,15 @@ module Kabutomushi
     stats[:health] == 100
   end
 
+  def players_are_careful?
+    weakest_player.stats[:health] > 70
+  end
+
   # information
+
+  def d6
+    rand(6) + 1
+  end
 
   def weakest_player
     players.min { |a, b| a.stats[:health] <=> b.stats[:health] }

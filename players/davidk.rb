@@ -1,37 +1,62 @@
 module DavidK
+  # `move` recursion call mitigation
+  def self.extended(base)
+    base.instance_variable_set :@move_call_depth, 0
+    base.instance_variable_set :@move_callee, nil
+  end
+  
+  # join the horde
+  def horde
+    true
+  end
+  
   def to_s
     "david karapetyan"
   end
 
   def move
-  	opponent, full_speed = killable_opponent
-  	if (stats[:health] >= 50 || full_speed) && !opponent.nil?
-    	[:attack, opponent]
-    else
-    	[:rest]
+    action = [:rest] # rest is the default
+    if (@move_call_depth += 1) > 1 # this means somebody is trying to figure out what we are doing so we lie
+      @move_call_depth -= 1
+      return action
     end
+    opponent = pick_opponent
+    if stats[:health] >= 90
+  	  action = [:attack, opponent]
+    end
+    @move_call_depth -= 1
+    action
   end
 
   private
-
-  def killable_opponent
-  	all_opponents = Game.world[:players].select{|p| p != self}
-    if all_opponents.length == 1
-      return all_opponents[0], :yes
+  
+  def gang_score_and_aggro(opponents)
+    g_score = Hash.new(0)
+    predator_prey_relation = Hash.new([])
+    opponents.each do |p|
+      if p.respond_to?(:move) # monsters don't respond to move
+        @move_callee, player_move = p, p.move
+        if (attackee = player_move[1]) # see if the player is attacking somebody
+          # increment gang score and track the attacker
+          g_score[attackee] += 1
+          predator_prey_relation[attackee] += [p]
+        end
+      end
     end
-  	n = 1
-    possible_opponents = all_opponents.select {|o| can_kill_in_n_hits?(o, n)}.sort {|a,b| b.stats[:health] <=> a.stats[:health]}
-    #while possible_opponents.empty?
-    #	n += 2
-    #	possible_opponents = all_opponents.select {|o| can_kill_in_n_hits?(o, n)}.sort {|a,b| b.stats[:health] <=> a.stats[:health]}
-    #end
-    return possible_opponents.first, nil
+    return g_score, predator_prey_relation
   end
   
-  def can_kill_in_n_hits?(player, n)
-  	enemy_stats = player.stats
-  	points = stats[:strength] - (enemy_stats[:defense] / 2)
-  	enemy_stats[:health] <= n * points
+  # find somebody we can potentially attack or return nil in case we should be resting
+  def pick_opponent
+    all_opponents = Game.world[:players].select {|p| p.to_s != "david karapetyan"}
+    # compute some metrics and relations to be used in our strategy
+    gang_score, aggro = gang_score_and_aggro(all_opponents)
+    # swartzian transform
+    health_cache = Hash.new
+    sorted_opponents = all_opponents.sort do |a,b| 
+      [gang_score[b], health_cache[b] ||= b.stats[:health]] <=> [gang_score[a], health_cache[a] ||= a.stats[:health]]
+    end
+    choices = sorted_opponents[0..2]
+    choices[rand(choices.length)]
   end
-  
 end

@@ -1,14 +1,14 @@
-module Mamay
+module AngryMamay
 
 	def to_s
-		"Cossack Mamay"
+		"Angry Mamay"
 	end
 
 	def move
 		if need_a_rest? or already_winner?
 			[:rest]	
 		else	
-			[:attack, (weak or rats.first or competitor)]
+			[:attack, (weak or rats[rand(rats.length - 1)] or competitor)]
 		end	
 	end
 	
@@ -23,7 +23,7 @@ module Mamay
 	end
 
 	def need_a_rest?
-		stats[:health] < (humans.count * 0.25)*10
+		stats[:health] >= 90 ? false : stats[:health] < (humans.count * 0.25)*10
 	end
 
 	def already_winner?
