@@ -4,40 +4,48 @@ module ATabbyCat
   end
   
   def move
-    @opponent = select_opponent
-    if cat_has_advantage?
-      [:attack, @opponent]
+    @prey = select_prey
+    if killable? @prey || health_looks_okay?
+      [:attack, @prey]
     else
       [:rest]
     end
   end
   
   private
-  def select_opponent
-    mercy_kill? || rat? || weakest_player
-  end
-  
-  def mercy_kill?
-    players.select { |player| killable? player }.first
+  def select_prey
+    strongest_killable_human || rat || healthiest_human
   end
 
-  def killable? player
-    stats[:strength] - (player.stats[:defense] / 2) > player.stats[:health]
+  def health_looks_okay?
+    @prey.stats[:health] <= stats[:health]
   end
-  
-  def rat?
-    Game.world[:players].select { |p| p.to_s == 'rat' }.first
+
+  def killable? prey
+    stats[:strength] - prey.stats[:defense] / 2 >= prey.stats[:health]
   end
   
   def players
-    Game.world[:players].select { |p| p != self }
+    Game.world[:players]
   end
-  
-  def weakest_player
-    players.min { |a, b| a.stats[:health] <=> b.stats[:health] }
+
+  def humans
+    players.select { |p| p != self }
   end
-  
-  def cat_has_advantage?
-    stats[:health] > @opponent.stats[:health]
+
+  def strongest_killable_human
+    humans.select { |p| killable? p }.max { |p| p.stats[:experience] }
+  end
+
+  def healthiest_human
+    humans.max { |p| p.stats[:health] }
+  end
+
+  def rats
+    players.select { |p| p.to_s == 'rat' }
+  end
+
+  def rat
+    rats.sample
   end
 end
