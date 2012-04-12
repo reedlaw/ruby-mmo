@@ -4,8 +4,9 @@ module DavidK
   end
 
   def move
-  	if stats[:health] >= 50 && !killable_opponent.nil?
-    	[:attack, killable_opponent]
+  	opponent = killable_opponent
+  	if stats[:health] >= 50 && !opponent.nil?
+    	[:attack, opponent]
     else
     	[:rest]
     end
