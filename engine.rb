@@ -51,7 +51,7 @@ end
 
 
 #This generates new monsters
-10.times do
+20.times do
   monster = Monster.new
   game.players << monster
   r = PlayerProxy.new(monster)

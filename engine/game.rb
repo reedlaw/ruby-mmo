@@ -11,11 +11,13 @@ class Game
   end
 
   def round(count)
-
-
-
     count.times do |i|
       puts "Round #{i}"
+      
+      # Make it fair and shuffle players
+      @players.shuffle!
+      @proxies.shuffle!
+
       update_world
       @players.each do |p|
 
@@ -44,11 +46,19 @@ class Game
           p.send(m, object)
         end
       end
-    end
+      # Finish if there is only one player
+      break if @players.size == 1
 
-    #results
+      puts "Stats:"
+      @proxies.sort_by { |p| [-p.stats[:experience], p.to_s] }.each do |p|
+          puts "\t#{p}: #{p.stats}"
+      end
+      puts 
+    end
+    puts 
     puts "Results:"
-    @proxies.sort_by(&:to_s).each do |p|
+    puts "--------"
+    @proxies.sort_by { |p| [-p.stats[:experience], p.to_s] }.each do |p|
       puts "#{p}: #{p.stats}"
     end
     winner = @proxies.inject(@proxies[0]) {|max, item| item.stats[:experience] > max.stats[:experience] ? item : max }
