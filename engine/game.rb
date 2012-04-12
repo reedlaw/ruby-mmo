@@ -26,8 +26,12 @@ class Game
           when :attack
             o = move.last
             object = @players.select {|p| p.proxy == o}.first
-            attacks[object] = [] unless attacks.keys.include? object
-            attacks[object] << p
+
+            # prevent using not existing objects
+            if object
+                attacks[object] = [] unless attacks.keys.include? object
+                attacks[object] << p
+            end
           when :rest
             rest << p
           end
@@ -49,10 +53,10 @@ class Game
 
         if attackers.empty?
             next
-        elsif attackers.size == 1
-            puts "#{attackers.first} attacks #{target}"
+        elsif attackers.length == 1
+            puts "#{attackers.first.proxy} attacks #{target.proxy}"
         else
-            puts "#{attackers[0..-2].join ', '} and #{attackers[-1]} attack #{target}"
+            puts "#{attackers[0..-2].map {|a| a.proxy}.join ', '} and #{attackers.last.proxy} attack #{target.proxy}"
         end
 
         attackers.each do |attacker|
