@@ -1,16 +1,12 @@
-module AMichael
+module Michael
   def move
-    player_count = Game.world[:players].count
     opponent = least_health_opponent
-    leader = current_leader
-              git
     case
-      when ((opponent.stats[:health] + (opponent.stats[:defense]/2)) <  self.stats[:strength]) && self.stats[:experience] <= leader.stats[:experience]+200
-        [:attack,opponent]
-      when player_count == 2 && self.stats[:health] > opponent.stats[:health]
+      when kill_zone?(opponent)
         [:attack, opponent]
-      when self.stats[:health] < 100
-        [:rest]
+
+      when opponents.count == 1 && opponent.stats[:health] < my_health
+        [:attack, opponent]
       else
         [:rest]
     end
@@ -20,39 +16,26 @@ module AMichael
     "Michael"
   end
 
+  def players
+    Game.world[:players].select
+  end
+
+  def opponents
+    Game.world[:players].select{ |player| player != self}
+  end
+
+
   def least_health_opponent
-    for opponent in Game.world[:players].select{|p|p != self}
-
-      if @least_health_opponent.nil?
-        @least_health_opponent = opponent
-      end
-
-      if opponent.stats[:health] < @least_health_opponent.stats[:health] && @least_health_opponent.alive?
-      @least_health_opponent = opponent
-      else @least_health_opponent = opponent
-      end
-
-    end
-    @least_health_opponent
+    opponents.inject {|min, player| player.stats[:health] > min.stats[:health] ? min : player }
   end
 
-
-  def current_leader
-    for opponent in Game.world[:players].select{|p|p != self}
-      if @current_leader.nil?
-        @current_leader = opponent
-      end
-
-      if opponent.stats[:experience] > @current_leader.stats[:experience]
-        @current_leader = opponent
-        puts "new winner fire away"
-      end
-    end
-
-    @current_leader
+  def kill_zone?(player)
+     (player.stats[:health] + player.stats[:defense]/2) <= self.stats[:strength]
   end
 
-
+  def my_health
+    self.stats[:health]
+  end
 
 end
 
