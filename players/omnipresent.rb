@@ -1,7 +1,7 @@
 module Omnipresent
   RISKY_HEALTH_LEVEL = 30
   DONT_GET_GANGED_UP = 60
-  GOOD_HEALTH = 70
+  GOOD_HEALTH = 90
   PREV_WORST_HEALTH = 100
   def move
     return [:attack, confirm_dead_after_attack[0]] unless confirm_dead_after_attack[0].nil?
@@ -9,6 +9,9 @@ module Omnipresent
     return play_aggressive if (stats[:health] > GOOD_HEALTH && current_spot != 0)
 
     return show_fight if (stats[:health] <= DONT_GET_GANGED_UP && current_spot == 0)
+
+    #always fight when its a TRUEL!
+    return always_fight if (others.size == 3) && (stats[:health] > DONT_GET_GANGED_UP)
 
     [:rest]
   end
