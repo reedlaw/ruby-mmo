@@ -1,6 +1,6 @@
 module Jayaram
   def find_max_damage
-	list_opponents.sort_by{ |a| [a.stats[:defense],a.stats[:health]]}.last
+	list_opponents.sort_by{ |a| [a.stats[:defense],a.stats[:health]]}.first
   end
   
   def find_killable_opponent
