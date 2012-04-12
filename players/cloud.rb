@@ -4,23 +4,11 @@ module Cloud
   end
   
   def move
-    hide_if_low_hp
-    if full_health? || one_on_one
-      if limit_break
-        [:attack, lowest_hp]
-      else
-        [:attack, biggest_threat]
-      end
+    too_many_opponents
+    if health(self) <= 90
+      [:rest]
     else
-      if self.stats[:health] < 60
-        [:rest]
-      else
-        if limit_break
-          [:attack, lowest_hp]
-        else
-          [:rest]
-        end
-      end
+      kill_or_leader
     end
   end
   
@@ -51,12 +39,20 @@ module Cloud
     opponents.count == 1
   end
   
+  def kill_or_leader
+    if limit_break
+      [:attack, lowest_hp]
+    else
+      [:attack, biggest_threat]
+    end
+  end
+  
   def hits_to_kill
     health(lowest_hp)/self.stats[:strength]
   end
   
-  def hide_if_low_hp
-    if health(self) >= 60 
+  def too_many_opponents
+    if opponents.count < 5
       unless Game.world[:players].include?(self)
         Game.world[:players] << self
       end
