@@ -4,7 +4,7 @@ module DavidK
   end
 
   def move
-  	if stats[:health] >= 90
+  	if stats[:health] >= 50 && !killable_opponent.nil?
     	[:attack, killable_opponent]
     else
     	[:rest]
@@ -14,13 +14,13 @@ module DavidK
   private
 
   def killable_opponent
-  	all_opponents = Game.world[:players].select{ |p| p != self }
+  	all_opponents = Game.world[:players].select{|p| p != self}
   	n = 1
-    possible_opponents = all_opponents.select {|o| can_kill_in_n_hits?(o, n) }
-    while possible_opponents.empty?
-    	n += 2
-    	possible_opponents = all_opponents.select {|o| can_kill_in_n_hits?(o, n) }
-    end
+    possible_opponents = all_opponents.select {|o| can_kill_in_n_hits?(o, n)}.sort {|a,b| b.stats[:health] <=> a.stats[:health]}
+    #while possible_opponents.empty?
+    #	n += 2
+    #	possible_opponents = all_opponents.select {|o| can_kill_in_n_hits?(o, n)}.sort {|a,b| b.stats[:health] <=> a.stats[:health]}
+    #end
     possible_opponents.first
   end
   
