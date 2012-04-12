@@ -95,3 +95,36 @@ module Araknus
   end
 end
 
+10.times.each do |i|
+ eval("""
+  module Slave#{i}
+    def move
+      if Game.world[:players].include?(self)
+        Game.world[:players].reject! {|p| p == self}
+      end
+
+      if master_commands? && Game.world[:players].size != 0
+        [:attack, enemy]
+      else
+        [:rest]
+      end
+    end
+
+    def master_commands?
+      Game.world[:players].select {|p| p.to_s == \"araknus\"}.empty?
+    end
+
+    def enemy
+      players.min { |a,b| health(a) <=> health(b) }
+    end
+
+    def players
+      Game.world[:players].select { |p| p != self || p.to_s != \"araknus\"}
+    end
+
+    def to_s
+      \"slave#{i}\"
+    end
+  end
+ """)
+end
