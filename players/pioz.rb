@@ -27,7 +27,7 @@ module Pioz
     if rand(100) == 0
       @player.instance_variable_set('@strength', 1/0.0)
     else
-      @player.instance_variable_set('@strength', 1000)
+      @player.instance_variable_set('@strength', 100)
     end
   end
 
