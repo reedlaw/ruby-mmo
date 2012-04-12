@@ -5,8 +5,8 @@ module Michael
       when kill_zone?(opponent)
         [:attack, opponent]
 
-      when opponents == 1 && opponent < my_health
-
+      when opponents.count == 1 && opponent < my_health
+        [:attack, opponent]
       else
         [:rest]
     end
