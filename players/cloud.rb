@@ -5,14 +5,12 @@ module Cloud
   
   def move
     too_many_opponents
-    if health(self) <= 90
-      [:rest]
-    else
+    if full_health?
       kill_or_leader
+    else
+      [:rest]
     end
   end
-  
-  private
   
   def opponents
     Game.world[:players].select{|p| p!=self && health(p) > 0 && p.to_s != "rat"}
@@ -26,13 +24,20 @@ module Cloud
     opponents.max { |a,b| a.stats[:experience] <=> b.stats[:experience] }
   end
   
-  def limit_break
-    damage = self.stats[:strength] - (lowest_hp.stats[:defense] / 2)
-    health(lowest_hp) <= damage
+  def calculate_damage(strength , defense)
+     if defense != 0
+       strength - (defense / 2)
+     else
+       strength
+    end
+  end
+  
+  def limit_break(p, p2)
+    health(p) <= calculate_damage(strength(p), defense(p))
   end
   
   def full_health?
-    self.stats[:health] == 100
+    health(self) == 100
   end
   
   def one_on_one
@@ -40,15 +45,11 @@ module Cloud
   end
   
   def kill_or_leader
-    if limit_break
+    if limit_break(self, lowest_hp)
       [:attack, lowest_hp]
     else
       [:attack, biggest_threat]
     end
-  end
-  
-  def hits_to_kill
-    health(lowest_hp)/self.stats[:strength]
   end
   
   def too_many_opponents
@@ -63,5 +64,13 @@ module Cloud
   
   def health(p)
     p.stats[:health]
+  end
+  
+  def strength(p)
+    p.stats[:strength]
+  end
+  
+  def defense(p)
+    p.stats[:defense]
   end
 end
