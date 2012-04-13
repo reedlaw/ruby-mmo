@@ -21,7 +21,7 @@ module Noob
     if rats.size > 1 
       humans = opponents.reject { |p| p.to_s == 'rat' }
       rats.reject! do |r|
-        humans.find { |p| p.move[1] == r } 
+        humans.find { |p| p.move[1].to_s == r.to_s } 
       end
       rats.sample
     else
