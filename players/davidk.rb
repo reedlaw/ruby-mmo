@@ -1,4 +1,10 @@
 module DavidK
+  # move recursion call mitigation
+  def self.extended(base)
+    @move_call_depth = 0
+    @move_callee = nil
+  end
+  
   # join the horde
   def horde
     true
@@ -12,12 +18,18 @@ module DavidK
   # an infinite loop because killable_opponent will call move on another player which will call
   # move on us and so on and so forth
   def move
+    @move_call_depth += 1 
+    if @move_call_depth > 1 # this means somebody is trying to figure out what we are doing so we lie
+      @move_call_depth -= 1
+      return [:rest]
+    end
+    action = [:rest]
     opponent, full_speed = killable_opponent
     if (stats[:health] >= 50 || full_speed) && !opponent.nil?
-  	  [:attack, opponent]
-    else
-      [:rest]
+  	  action = [:attack, opponent]
     end
+    @move_call_depth -= 1
+    return action
   end
 
   private
@@ -39,7 +51,7 @@ module DavidK
     predator_prey_relation = Hash.new([])
     opponents.each do |p|
       if p.respond_to?(:move) # monsters don't respond to move
-        player_move = p.move
+        @move_callee, player_move = p, p.move
         if player_move.length == 2 then # see if the player is attacking somebody
           attackee = player_move[1] # who is the player attacking
           # increment gang score and track the attacker
