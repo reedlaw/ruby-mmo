@@ -1,11 +1,15 @@
 module DavidK
+  def horde
+    true
+  end
+  
   def to_s
     "david karapetyan"
   end
 
   def move
     opponent, full_speed = killable_opponent
-    if (stats[:health] >= 50 || full_speed) && !opponent.nil?
+    if (stats[:health] >= 90 || full_speed) && !opponent.nil?
   	  [:attack, opponent]
     else
       [:rest]
@@ -20,14 +24,12 @@ module DavidK
       return all_opponents[0], :yes
     end
   	n = 1
-    possible_opponents = all_opponents.select do |o|
-      can_kill_in_n_hits?(o, n)
-    end.sort { |a, b| b.stats[:health] <=> a.stats[:health] }
-    #while possible_opponents.empty?
-    #	n += 2
-    #	possible_opponents = all_opponents.select {|o| can_kill_in_n_hits?(o, n)}.sort {|a,b| b.stats[:health] <=> a.stats[:health]}
-    #end
-    return possible_opponents.first, nil
+    possible_opponents = all_opponents.select {|o| can_kill_in_n_hits?(o, n)}
+    # give each attacked player a gang score, higher scores are worse
+    gang_score = Hash.new(0)
+    all_opponents.map {|p| p.move}.select {|m| m.length > 1}.map {|m| m[1]}.each {|k| gang_score[k] += 1}
+    # sort possible opponents by gang score and pick the one with the lowest score
+    return possible_opponents.min {|a,b| gang_score[a] <=> gang_score[b]}, nil
   end
 
   # @return [BooleanLiteral]
