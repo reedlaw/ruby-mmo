@@ -1,16 +1,23 @@
 #!/usr/bin/env ruby
+require 'optparse'
+
+options = {}
+OptionParser.new do |opts|
+  opts.on("-r", "--runs N", Integer, "Number of runs") do |runs|
+    options[:runs] = runs
+  end
+  opts.on("-o", "--rounds N", Integer, "Number of rounds") do |rounds|
+    options[:rounds] = rounds
+  end
+end.parse!
+
+options[:runs] = 1000 unless options[:runs]
+options[:rounds] = 10 unless options[:rounds]
 
 last_line = []
 
-if ARGV.size > 1 and ARGV[0] == "-r" and ARGV[1] =~ /^[1-9]\d*$/
-  ARGV.shift
-  runs = ARGV.shift.to_i
-else
-  runs = 1000
-end
-
-runs.times do
-  output = `ruby ./engine.rb`
+options[:runs].times do
+  output = `ruby ./engine.rb -r #{options[:rounds]}`
   last_line.push output.split("\n").last
 end
 
