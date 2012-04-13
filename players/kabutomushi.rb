@@ -4,9 +4,9 @@ module Kabutomushi
   end
 
   def move
-    return kill_rat if d6 > 3 && rats_are_alive?
-    return rest if d6 > 3 && people_are_passive?
+    return kill_rat if rats_are_alive?
     return deliver_killing_blow if d6 > 4 && someone_is_killable?
+    return rest if people_are_passive?
     return attack strongest_player if healthy?
     rest
   end
