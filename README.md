@@ -44,33 +44,16 @@ The player with the highest level and experience wins.
 Winners
 -------
 
-The game can be run 1000 times using `./multi_run.rb`
+Latest results using `./multi_run.rb -r 1000 -o 100`:
 
-Latest results:
-
-    strax won 295 times
-    South Pole Steve won 247 times
-    Stealthy Guy won 199 times
-    Michael won 124 times
-    Izidor won 50 times
-    Valentin won 33 times
-    Jurek won 31 times
-    Raiko won 10 times
-    Chuck Norris won 5 times
-    Eric the Kill Steal won 5 times
-    Kabutomushi won 1 times
-
-Results from April 11, 2012:
-
-    Eric the Kill Steal won 272 times
-    strax won 247 times
-    A Tabby Cat won 226 times
-    Ian Terrell won 185 times
-    Valentin won 39 times
-    Izidor won 21 times
-    *No rest for the wicked* won 10 times
-
-Honorable Mention
------------------
-
-Jurek wins most of the time in rounds of 1,000.
+    Cossack Mamay won 454 times
+    Chuck Norris won 199 times
+    South Pole Steve won 102 times
+    *noob* won 101 times
+    Kabutomushi won 80 times
+    Mighty Snuderl won 25 times
+    Michael won 15 times
+    Jack won 13 times
+    Eric the Kill Steal won 6 times
+    Izidor won 4 times
+    jimworm won 1 times
