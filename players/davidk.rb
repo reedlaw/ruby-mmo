@@ -1,8 +1,8 @@
 module DavidK
   # move recursion call mitigation
   def self.extended(base)
-    @move_call_depth = 0
-    @move_callee = nil
+    base.instance_variable_set :@move_call_depth, 0
+    base.instance_variable_set :@move_callee, nil
   end
   
   # join the horde
