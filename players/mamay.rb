@@ -7,10 +7,8 @@ module Mamay
 	def move
 		if need_a_rest? or already_winner?
 			[:rest]	
-		elsif weak
-			[:attack, weak]
 		else	
-			[:attack, rats.first]
+			[:attack, (weak or rats.first or competitor)]
 		end	
 	end
 	
@@ -25,7 +23,7 @@ module Mamay
 	end
 
 	def need_a_rest?
-		stats[:health] < (humans.count/2)*10
+		stats[:health] < (humans.count * 0.25)*10
 	end
 
 	def already_winner?
@@ -36,6 +34,10 @@ module Mamay
 		humans.detect do |h|
 		  h.stats[:health] <= (stats[:strength] - (h.stats[:defense] / 2))
 		end 
+	end
+
+	def competitor
+		humans.max_by{|h| h.stats[:experience] }
 	end	
 
 end
