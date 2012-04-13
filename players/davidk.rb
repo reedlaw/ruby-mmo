@@ -1,4 +1,5 @@
 module DavidK
+  # join the horde
   def horde
     true
   end
