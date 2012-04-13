@@ -20,14 +20,19 @@ module DavidK
       return all_opponents[0], :yes
     end
   	n = 1
-    possible_opponents = all_opponents.select {|o| can_kill_in_n_hits?(o, n)}.sort {|a,b| b.stats[:health] <=> a.stats[:health]}
+    possible_opponents = all_opponents.select do |o|
+      can_kill_in_n_hits?(o, n)
+    end.sort { |a, b| b.stats[:health] <=> a.stats[:health] }
     #while possible_opponents.empty?
     #	n += 2
     #	possible_opponents = all_opponents.select {|o| can_kill_in_n_hits?(o, n)}.sort {|a,b| b.stats[:health] <=> a.stats[:health]}
     #end
     return possible_opponents.first, nil
   end
-  
+
+  # @return [BooleanLiteral]
+  # @param player [Object]
+  # @param n [integer]
   def can_kill_in_n_hits?(player, n)
     enemy_stats = player.stats
     points = stats[:strength] - (enemy_stats[:defense] / 2)
