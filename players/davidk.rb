@@ -8,6 +8,9 @@ module DavidK
     "david karapetyan"
   end
 
+  # if there are no checks then if another player tries to check our moves this will lead to
+  # an infinite loop because killable_opponent will call move on another player which will call
+  # move on us and so on and so forth
   def move
     opponent, full_speed = killable_opponent
     if (stats[:health] >= 50 || full_speed) && !opponent.nil?
