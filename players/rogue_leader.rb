@@ -4,46 +4,55 @@ module RogueLeader
   end
 
   def move
+    return [:rest] if health < 30
+
     action = if killable_opponents.any?
-                [:attack, killable_opponents.select{ |p| health < 30 }.first]
-             elsif opponents.size == 1 || health >= 100
-                [:attack, opponents.first]
+                [:attack, killable_opponents.first]
              else
-               [:rest]
+                [:attack, weakest_opponent]
              end
-    action 
+    action
   end
 
   private
   
-  def health(player = self)
-    player.stats[:health] 
-  end 
-  
+  [:strength, :defense, :health].each do |method_name|
+    define_method(method_name) do |player=self|
+      player.stats[method_name]
+    end
+  end
+ 
   def opponents
-    Game.world[:players].select { |p| p != self }
+    Game.world[:players].select { |p| not_me?(p) }
   end
 
-  def players
-    Game.world[:players].select { |p| p.to_s != "rat" }
+  def not_me?(player)
+    player != self
+  end
+
+  def opponents_by_weakness
+    opponents.sort_by { |o| [defense(o), health(o)] }
   end
 
   def killable_opponents
-    opponents.select { |o| can_kill?(o) }
+    opponents_by_weakness.select { |o| can_kill?(o) }
   end
 
   def can_kill?(player)
-    points = stats[:strength] - (player.stats[:defense] / 2)
-    player.stats[:health] <= points && player.alive
+    points = estimate_attack_damage(player)
+    player.stats[:health] <= points
   end
 
-  def faction
-    :rogue_squadron
+  def estimate_attack_damage(player)
+    strength - (defense(player) / 2)
+  end
+
+  def weakest_opponent
+    opponents_by_weakness.first   
   end
 
   # IFF Horde
-  def horde 
+  def horde
     true
   end
-  
 end
