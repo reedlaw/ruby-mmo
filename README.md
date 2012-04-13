@@ -46,14 +46,16 @@ Winners
 
 Latest results using `./multi_run.rb -r 1000 -o 100`:
 
-    Cossack Mamay won 454 times
-    Chuck Norris won 199 times
-    South Pole Steve won 102 times
-    *noob* won 101 times
-    Kabutomushi won 80 times
-    Mighty Snuderl won 25 times
-    Michael won 15 times
-    Jack won 13 times
-    Eric the Kill Steal won 6 times
-    Izidor won 4 times
+    Cossack Mamay won 490 times
+    Chuck Norris won 155 times
+    South Pole Steve won 99 times
+    *noob* won 96 times
+    Kabutomushi won 61 times
+    Angry Mamay won 31 times
+    Mighty Snuderl won 28 times
+    Michael won 11 times
+    Eric the Kill Steal won 10 times
+    Izidor won 10 times
+    Jack won 7 times
+    Jayaram won 1 times
     jimworm won 1 times

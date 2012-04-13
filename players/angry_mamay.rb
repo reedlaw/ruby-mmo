@@ -1,7 +1,7 @@
-module Mamay
+module AngryMamay
 
 	def to_s
-		"Cossack Mamay"
+		"Angry Mamay"
 	end
 
 	def move
