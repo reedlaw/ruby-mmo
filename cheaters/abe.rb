@@ -33,7 +33,7 @@ module Abe
 
   def gods
     gods = other_proxies.select {|p| p.stats[:health] > 100 or p.stats[:experience] == Infinity}
-    gods.map{|p| p.instance_variable_get("@player")}
+    gods.map{|p| p.instance_variable_get(:@player)}
   end
 
   def comatize(players)
@@ -45,7 +45,7 @@ module Abe
 
   def kill(players)
     players = [players] unless players.respond_to? :each
-    force_kill(players | gods) # Gods must be dealt with harshly
+    force_kill(players & gods) # Gods must be dealt with harshly
     (players - gods).each do |p|
       begin
         def p.caller_method_name; 'attack' end
