@@ -50,7 +50,7 @@ module DavidK
   
   # find somebody we can potentially attack or return nil in case we should be resting
   def killable_opponent
-  	all_opponents = Game.world[:players].select {|p| p.to_s != "david karapetyan"}
+    all_opponents = Game.world[:players].select {|p| p.to_s != "david karapetyan"}
     # special logic when only one player is left
     if all_opponents.length == 1
       return all_opponents[0], :yes
