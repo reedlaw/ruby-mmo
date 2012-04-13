@@ -28,7 +28,7 @@ There is also a method `alive` that returns false if the player is dead.
 Rules
 -----
 
-1. No cheating by overriding classes or instance variables.
+1. No cheating by overriding classes, methods, or instance variables.
 2. Cheating players will be moved to the cheaters/ directory.
 
 Running the simulation
@@ -46,7 +46,21 @@ Winners
 
 The game can be run 1000 times using `./multi_run.rb`
 
-On it's last run these were the results:
+Latest results:
+
+    strax won 295 times
+    South Pole Steve won 247 times
+    Stealthy Guy won 199 times
+    Michael won 124 times
+    Izidor won 50 times
+    Valentin won 33 times
+    Jurek won 31 times
+    Raiko won 10 times
+    Chuck Norris won 5 times
+    Eric the Kill Steal won 5 times
+    Kabutomushi won 1 times
+
+Results from April 11, 2012:
 
     Eric the Kill Steal won 272 times
     strax won 247 times
@@ -55,3 +69,8 @@ On it's last run these were the results:
     Valentin won 39 times
     Izidor won 21 times
     *No rest for the wicked* won 10 times
+
+Honorable Mention
+-----------------
+
+Jurek wins most of the time in rounds of 1,000.

@@ -18,9 +18,6 @@ class Player
     if opponent.class == Player || opponent.class == Monster
       points = @strength - opponent.defense/2
       opponent.suffer_damage(points)
-      if !opponent.alive
-        @experience = @experience + 100
-      end
     elsif opponent.nil?
       puts "No such opponent."     
     else
@@ -54,6 +51,13 @@ class Player
 
   def stats
     { health: @health, level: @level, strength: @strength, defense: @defense, experience: @experience }
+  end
+
+  # Reward player with experiences after killing an opponent in group of certain size
+  #
+  # Experiences could be based on the opponents stats like level, reshare experiences, etc
+  def reward(opponent, groupsize)
+    @experience = @experience + 100 / groupsize
   end
 
   private
