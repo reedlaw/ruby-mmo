@@ -19,10 +19,12 @@ module Noob
     #find a rat that's not beeing attacked
     rats = opponents.select { |p| p.to_s == 'rat' }
     if rats.size > 1 
-      humans = opponents.reject { |p| p.to_s == 'rat' }
-      rats.reject! do |r|
-        humans.find { |p| p.move[1].to_s == r.to_s } 
-      end
+# if two people try to check what's other moves, it gets whacky
+#      humans = opponents.reject { |p| p.to_s == 'rat' }
+#      rats.reject! do |r|
+#        humans.find { |p| p.move[1] == r } 
+#        debugger
+#      end
       rats.sample
     else
       nil
