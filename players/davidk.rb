@@ -27,7 +27,7 @@ module DavidK
     possible_opponents = all_opponents.select {|o| can_kill_in_n_hits?(o, n)}
     # give each attacked player a gang score, higher scores are worse
     gang_score = Hash.new(0)
-    all_opponents.map {|p| p.move}.select {|m| m.length > 1}.map {|m| m[1]}.each {|k| gang_score[k] += 1}
+    all_opponents.map {|p| p.class == "Player" && p.move}.select {|m| m && m.length > 1}.map {|m| m[1]}.each {|k| gang_score[k] += 1}
     # sort possible opponents by gang score and pick the one with the lowest score
     return possible_opponents.min {|a,b| gang_score[a] <=> gang_score[b]}, nil
   end
