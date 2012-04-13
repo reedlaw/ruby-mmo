@@ -9,7 +9,7 @@ module DavidK
 
   def move
     opponent, full_speed = killable_opponent
-    if (stats[:health] >= 95 || full_speed) && !opponent.nil?
+    if (stats[:health] >= 50 || full_speed) && !opponent.nil?
   	  [:attack, opponent]
     else
       [:rest]
@@ -43,12 +43,12 @@ module DavidK
       end
     end.select {|m| m}.map {|m| m[1]}
     attackees.each {|k| gang_score[k] += 1}
-    if stats[:health] < 100 && gang_score[self] > 0 then
+    if stats[:health] < 80 && gang_score[self] < 2 then
       return nil, nil
     end
-    # favor attacking players over monsters
-    sorted_opponents = possible_opponents.sort {|a,b| gang_score[a] <=> gang_score[b]} 
-    return sorted_opponents.select {|p| p.respond_to?(:move)}[0] || sorted_opponents[0], nil
+    sorted_opponents = possible_opponents.sort {|a,b| gang_score[a] <=> gang_score[b]}
+    # attack monsters first 
+    return sorted_opponents.select {|p| !p.respond_to?(:move)}[0] || sorted_opponents[-1], nil
   end
 
   def can_kill_in_n_hits?(player, n)
