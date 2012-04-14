@@ -3,7 +3,6 @@ module DavidK
   def self.extended(base)
     base.instance_variable_set :@move_call_depth, 0
     base.instance_variable_set :@move_callee, nil
-    base.instance_variable_set :@previous_aggro_attacker, nil
   end
   
   # join the horde
@@ -16,14 +15,13 @@ module DavidK
   end
 
   def move
-    @move_call_depth += 1 
-    if @move_call_depth > 1 # this means somebody is trying to figure out what we are doing so we lie
+    action = [:rest] # rest is the default
+    if (@move_call_depth += 1) > 1 # this means somebody is trying to figure out what we are doing so we lie
       @move_call_depth -= 1
-      return [:rest]
+      return action
     end
-    action = [:rest]
     opponent = pick_opponent
-    if stats[:health] >= 90 && !opponent.nil?
+    if stats[:health] >= 90
   	  action = [:attack, opponent]
     end
     @move_call_depth -= 1
