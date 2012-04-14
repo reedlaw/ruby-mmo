@@ -27,7 +27,7 @@ module DavidK
   	  action = [:attack, opponent]
     end
     @move_call_depth -= 1
-    return action
+    action
   end
 
   private
@@ -38,8 +38,7 @@ module DavidK
     opponents.each do |p|
       if p.respond_to?(:move) # monsters don't respond to move
         @move_callee, player_move = p, p.move
-        if player_move.length == 2 # see if the player is attacking somebody
-          attackee = player_move[1] # who is the player attacking
+        if (attackee = player_move[1]) # see if the player is attacking somebody
           # increment gang score and track the attacker
           g_score[attackee] += 1
           predator_prey_relation[attackee] += [p]
@@ -54,11 +53,11 @@ module DavidK
     all_opponents = Game.world[:players].select {|p| p.to_s != "david karapetyan"}
     # compute some metrics and relations to be used in our strategy
     gang_score, aggro = gang_score_and_aggro(all_opponents)
+    # swartzian transform
+    health_cache = Hash.new
     sorted_opponents = all_opponents.sort do |a,b| 
-      [gang_score[b], b.stats[:health]] <=> [gang_score[a], a.stats[:health]]
+      [gang_score[b], health_cache[b] ||= b.stats[:health]] <=> [gang_score[a], health_cache[a] ||= a.stats[:health]]
     end
-    # see who my attackers are and sort them according to gang score as well
-    my_attackers = aggro[self].sort {|a,b| [gang_score[b], -b.stats[:health]] <=> [gang_score[a], -a.stats[:health]]}
     choices = sorted_opponents[0..2]
     choices[rand(choices.length)]
   end
