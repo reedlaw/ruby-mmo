@@ -3,6 +3,7 @@ module DavidK
   def self.extended(base)
     base.instance_variable_set :@move_call_depth, 0
     base.instance_variable_set :@move_callee, nil
+    base.instance_variable_set :@previous_aggro_attacker, nil
   end
   
   # join the horde
@@ -21,8 +22,8 @@ module DavidK
       return [:rest]
     end
     action = [:rest]
-    opponent = killable_opponent
-    if stats[:health] >= 0 && !opponent.nil?
+    opponent = pick_opponent
+    if stats[:health] >= 70 && !opponent.nil?
   	  action = [:attack, opponent]
     end
     @move_call_depth -= 1
@@ -30,14 +31,6 @@ module DavidK
   end
 
   private
-
-  def n_hit_killables(opponents)
-    n = 1
-    while (possible_opponents = opponents.select {|o| can_kill_in_n_hits?(o, n)}).empty?
-      n += 1
-    end
-    possible_opponents
-  end
   
   def gang_score_and_aggro(opponents)
     g_score = Hash.new(0)
@@ -57,28 +50,18 @@ module DavidK
   end
   
   # find somebody we can potentially attack or return nil in case we should be resting
-  def killable_opponent
+  def pick_opponent
     all_opponents = Game.world[:players].select {|p| p.to_s != "david karapetyan"}
-    if all_opponents.select {|p| !p.respond_to?(:move)}.length > 0
-      return nil
-    end
-    # find people we could potentially kill
-    possible_opponents = n_hit_killables(all_opponents)
     # compute some metrics and relations to be used in our strategy
     gang_score, aggro = gang_score_and_aggro(all_opponents)
-    # order possible opponents according to gang score. lower score is better because
-    # we get more experience in that case
-    sorted_opponents = possible_opponents.sort {|a,b| gang_score[b] <=> gang_score[a]}
+    sorted_opponents = all_opponents.sort do |a,b| 
+      [-b.stats[:health], gang_score[b]] <=> [-a.stats[:health], gang_score[a]]
+    end
     # see who my attackers are and sort them according to gang score as well
-    my_attackers = aggro[self].sort {|a,b| gang_score[b] <=> gang_score[a]}
-    return my_attackers[0] || sorted_opponents[1] || sorted_opponents[0]
-  end
-
-  # figure out whether at our current strength level we can kill an opponent in n hits
-  # according to how the game engine calculates health loss
-  def can_kill_in_n_hits?(player, n)
-    enemy_stats = player.stats
-    points = stats[:strength] - (enemy_stats[:defense] / 2)
-    enemy_stats[:health] <= n * points
+    my_attackers = aggro[self].sort {|a,b| [gang_score[b], -b.stats[:health]] <=> [gang_score[a], -a.stats[:health]]}
+    puts "------------ attackers -----------"
+    puts my_attackers
+    puts "----------------------------------"
+    my_attackers[0] || sorted_opponents[0..1].last
   end
 end
