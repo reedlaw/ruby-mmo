@@ -23,7 +23,7 @@ module DavidK
     end
     action = [:rest]
     opponent = pick_opponent
-    if stats[:health] >= 80 && !opponent.nil?
+    if stats[:health] >= 90 && !opponent.nil?
   	  action = [:attack, opponent]
     end
     @move_call_depth -= 1
@@ -55,13 +55,11 @@ module DavidK
     # compute some metrics and relations to be used in our strategy
     gang_score, aggro = gang_score_and_aggro(all_opponents)
     sorted_opponents = all_opponents.sort do |a,b| 
-      [-b.stats[:health], gang_score[b]] <=> [-a.stats[:health], gang_score[a]]
+      [gang_score[b], b.stats[:health]] <=> [gang_score[a], a.stats[:health]]
     end
     # see who my attackers are and sort them according to gang score as well
     my_attackers = aggro[self].sort {|a,b| [gang_score[b], -b.stats[:health]] <=> [gang_score[a], -a.stats[:health]]}
-    puts "------------ attackers -----------"
-    puts my_attackers
-    puts "----------------------------------"
-    my_attackers[0] || sorted_opponents[0..1].last
+    choices = sorted_opponents[0..2]
+    choices[rand(choices.length)]
   end
 end
