@@ -45,8 +45,7 @@ module DavidK
   
   # go through all players other than self and build up some hash maps that can be used
   # for picking an opponent to attack
-  def gang_score_and_aggro
-    opponents = Game.world[:players].select {|p| p.to_s != "david karapetyan"} # find enemies
+  def gang_score_and_aggro(opponents)
     g_score = Hash.new(0)
     predator_prey_relation = Hash.new([])
     opponents.each do |p|
@@ -73,7 +72,7 @@ module DavidK
     # find people we could potentially kill
     possible_opponents = n_hit_killables(all_opponents)
     # compute some metrics and relations to be used in our strategy
-    gang_score, aggro = gang_score_and_agrro
+    gang_score, aggro = gang_score_and_aggro(all_opponents)
     # see if only one perseon is attacking us and our health is less than 80
     # and rest if that's true. the reason is that we can mitigate health loss
     # in this case at the expense of more experience points. we last longer but
