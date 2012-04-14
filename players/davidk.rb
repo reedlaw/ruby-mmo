@@ -23,7 +23,7 @@ module DavidK
     end
     action = [:rest]
     opponent = pick_opponent
-    if stats[:health] >= 70 && !opponent.nil?
+    if stats[:health] >= 80 && !opponent.nil?
   	  action = [:attack, opponent]
     end
     @move_call_depth -= 1
