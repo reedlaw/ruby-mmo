@@ -1,4 +1,4 @@
-module DavidK
+module DavidK2
   # `move` recursion call mitigation
   def self.extended(base)
     base.instance_variable_set :@move_call_depth, 0
@@ -6,7 +6,7 @@ module DavidK
   end
 
   def to_s
-    "david k"
+    "david k clone"
   end
 
   def move
