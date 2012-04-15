@@ -16,16 +16,16 @@ module DavidK
       @move_call_depth -= 1
       return [:attack, self]
     end
-    if stats[:health] <= 90 && rand < 0.2
+    if stats[:health] <= 80 && rand < 0.2
       @move_call_depth -= 1
       return action
     end
     opponent = pick_opponent(all_opponents)
-    if opponent
+    if opponent && stats[:health] >= 60
   	  action = [:attack, opponent]
     end
     @move_call_depth -= 1
-    action
+    return action
   end
 
   private
@@ -34,21 +34,32 @@ module DavidK
     # try to figure out who's attacking who
     predator_prey = Hash.new([])
     all_opponents.each do |enemy|
-      if (attackee = enemy.move[1])
-        predator_prey[attackee] += [enemy, enemy.stats[:strength]]
+      if enemy.respond_to?(:move)
+        if (attackee = enemy.move[1])
+          predator_prey[attackee] += [[enemy, enemy.stats[:strength]]]
+        end
       end
     end
     # if I have attackers then retaliate towards the weakest one
     if (attackers = predator_prey[self]).any?
-      return attackers.sort {|a,b| a.stats[:health] <=> b.stats[:health]}[0]
+      return attackers.sort {|a,b| a[0].stats[:health] <=> b[0].stats[:health]}[0][0]
+    end
+    # if there are more than 12 opponents then retaliate towards bullies
+    if (op_length = all_opponents.length) > 12
+      if (my_health = stats[:health]) >= 95 # attack somebody with high experience
+        h_cache = Hash.new
+        weakest = all_opponents.sort {|a,b| (h_cache[a] ||= a.stats[:health]) <=> (h_cache[b] ||= b.stats[:health])}[0]
+        return predator_prey[weakest].sort {|a,b| h_cache[a[0]] <=> h_cache[b[0]]}[0][0]
+      end
     end
     # I have no attackers. see if anyone has a death sentence, i.e. they will die if I
     # gang up on them with the others
     my_strength = stats[:strength]
     all_opponents.map do |o| 
-      eff_defense = o.stats[:defense] / 2.0 * ((o_attackers = predator_prey[o]).length + 1)
+      eff_defense = o.stats[:defense] / 2.0 * ((o_attackers = predator_prey[o]).length + 1 + \
+        (o.move[0] == :rest ? 1 : 0))
       attack_points = my_strength + \
-        o_attackers.reduce(0) {|acc, att_strength| acc + att_strength[1]} - eff_defense
+        o_attackers.reduce(0) {|acc, att_strength| acc + (att_strength[1] || 0)} - eff_defense
       if o.stats[:health] <= attack_points
         return o
       end
