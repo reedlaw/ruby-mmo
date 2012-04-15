@@ -72,7 +72,7 @@ Winners
     Eric the Kill Steal won 5 times
     Jayaram won 1 times
 
-### Endurance (`./multi_run.rb -r 10 -o 1000`)
+### Endurance (`./multi_run.rb -r 1000 -o 1000`)
 
     Cossack Mamay won 429 times
     Chuck Norris won 172 times
