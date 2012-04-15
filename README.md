@@ -44,18 +44,48 @@ The player with the highest level and experience wins.
 Winners
 -------
 
-Latest results using `./multi_run.rb -r 1000 -o 100`:
+### Sprint (`./multi_run.rb -r 1000 -o 10`)
 
-    Cossack Mamay won 490 times
-    Chuck Norris won 155 times
-    South Pole Steve won 99 times
-    *noob* won 96 times
-    Kabutomushi won 61 times
-    Angry Mamay won 31 times
+    Jayaram won 522 times
+    Mighty Snuderl won 288 times
+    Valentin won 67 times
+    *noob* won 41 times
+    Jack won 31 times
+    strax won 22 times
+    Angry Mamay won 16 times
+    Izidor won 7 times
+    South Pole Steve won 5 times
+    Kabutomushi won 1 times
+
+### Race (`./multi_run.rb -r 1000 -o 100`)
+
+    Cossack Mamay won 470 times
+    Chuck Norris won 156 times
+    South Pole Steve won 112 times
+    *noob* won 101 times
+    Kabutomushi won 66 times
+    Angry Mamay won 29 times
     Mighty Snuderl won 28 times
-    Michael won 11 times
-    Eric the Kill Steal won 10 times
-    Izidor won 10 times
-    Jack won 7 times
+    Michael won 13 times
+    Izidor won 13 times
+    Jack won 6 times
+    Eric the Kill Steal won 5 times
     Jayaram won 1 times
+
+### Endurance (`./multi_run.rb -r 10 -o 1000`)
+
+    Cossack Mamay won 429 times
+    Chuck Norris won 172 times
+    *noob* won 104 times
+    South Pole Steve won 102 times
+    Kabutomushi won 70 times
+    Michael won 28 times
+    Angry Mamay won 27 times
+    Mighty Snuderl won 25 times
+    Eric the Kill Steal won 13 times
+    Izidor won 13 times
+    Jack won 8 times
+    Sir Samsonite won 6 times
+    Crazy Carl won 1 times
     jimworm won 1 times
+    Jayaram won 1 times
