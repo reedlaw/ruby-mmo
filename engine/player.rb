@@ -1,6 +1,6 @@
 class Player
   attr_accessor :proxy
-  attr_reader :health, :level, :strength, :defense, :alive
+  attr_reader :max_health, :health, :level, :strength, :defense, :alive
 
   LEVEL_THRESHOLDS = [50,100,200,500,1000,1500,2500,4000]
   HEALTH_INDEX     = [100,110,125,145,170,195,225,260]
@@ -61,7 +61,7 @@ class Player
   #
   # Experiences could be based on the opponents stats like level, reshare experiences, etc
   def reward(opponent, groupsize)
-    @experience = @experience + 100 / groupsize
+    @experience = @experience + opponent.max_health / groupsize
     if @experience >= LEVEL_THRESHOLDS[@level]
       upgrade(@level)
     end
