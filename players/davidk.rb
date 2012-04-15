@@ -7,11 +7,6 @@ module DavidK
 
   def to_s
     "david k"
-  end  
-  
-  # join the horde
-  def horde
-    true
   end
 
   def move
@@ -36,6 +31,6 @@ module DavidK
   
   def pick_opponent
     all_opponents = Game.world[:players].select {|p| p != self}
-    all_opponents.find {|p| p.to_s == "Chuck Norris"} || all_opponents.sort! {|a,b| b.stats[:experience] <=> a.stats[:experience]}[0]
+    all_opponents.find {|p| p.to_s == "Chuck Norris"} || all_opponents.sort {|a,b| b.stats[:experience] <=> a.stats[:experience]}[0]
   end
 end
