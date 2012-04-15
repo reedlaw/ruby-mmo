@@ -10,16 +10,17 @@ module DavidK
   end
 
   def move
+    all_opponents = Game.world[:players].select {|p| p != self}
     action = [:rest] # rest is the default
-    if (@move_call_depth += 1) > 1 # this means somebody is trying to figure out what we are doing so we lie
+    if (@move_call_depth += 1) > 1
       @move_call_depth -= 1
-      return action
+      return [:attack, self]
     end
     if stats[:health] <= 90 && rand < 0.2
       @move_call_depth -= 1
       return action
     end
-    opponent = pick_opponent
+    opponent = pick_opponent(all_opponents)
     if opponent
   	  action = [:attack, opponent]
     end
@@ -29,8 +30,30 @@ module DavidK
 
   private
   
-  def pick_opponent
-    all_opponents = Game.world[:players].select {|p| p != self}
-    all_opponents.find {|p| p.to_s == "Chuck Norris"} || all_opponents.sort {|a,b| b.stats[:experience] <=> a.stats[:experience]}[0]
+  def pick_opponent(all_opponents)
+    # try to figure out who's attacking who
+    predator_prey = Hash.new([])
+    all_opponents.each do |enemy|
+      if (attackee = enemy.move[1])
+        predator_prey[attackee] += [enemy, enemy.stats[:strength]]
+      end
+    end
+    # if I have attackers then retaliate towards the weakest one
+    if (attackers = predator_prey[self]).any?
+      return attackers.sort {|a,b| a.stats[:health] <=> b.stats[:health]}[0]
+    end
+    # I have no attackers. see if anyone has a death sentence, i.e. they will die if I
+    # gang up on them with the others
+    my_strength = stats[:strength]
+    all_opponents.map do |o| 
+      eff_defense = o.stats[:defense] / 2.0 * ((o_attackers = predator_prey[o]).length + 1)
+      attack_points = my_strength + \
+        o_attackers.reduce(0) {|acc, att_strength| acc + att_strength[1]} - eff_defense
+      if o.stats[:health] <= attack_points
+        return o
+      end
+    end
+    # nobody had a death sentence so return nil which just means we'll rest
+    return nil
   end
 end
