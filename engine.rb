@@ -31,7 +31,8 @@ player_modules.each do |m|
   game.proxies << p
 end
 
-5.times do
+# Spawn 2 rats for each player
+(game.players.count * 2).times do
   monster = Monster.new
   game.players << monster
   r = PlayerProxy.new(monster)
@@ -44,7 +45,7 @@ if ARGV.size > 1 and ARGV[0] == "-r" and ARGV[1] =~ /^[1-9]\d*$/
   ARGV.shift
   rount_count = ARGV.shift.to_i
 else
-  rount_count = 10
+  rount_count = 100
 end
 
 game.round(rount_count)

@@ -29,8 +29,8 @@ class Game
 
             # prevent using not existing objects
             if object
-                attacks[object] = [] unless attacks.keys.include? object
-                attacks[object] << p
+              attacks[object] = [] unless attacks.keys.include? object
+              attacks[object] << p
             end
           when :rest
             rest << p
@@ -55,22 +55,22 @@ class Game
         attackers = attackers.select {|a| a.alive}
 
         if attackers.empty?
-            next
+          next
         elsif attackers.length == 1
-            puts "#{attackers.first.proxy} attacks #{target.proxy}"
+          puts "#{attackers.first.proxy} attacks #{target.proxy}"
         else
-            puts "#{attackers[0..-2].map {|a| a.proxy}.join ', '} and #{attackers.last.proxy} attack #{target.proxy}"
+          puts "#{attackers[0..-2].map {|a| a.proxy}.join ', '} and #{attackers.last.proxy} attack #{target.proxy}"
         end
 
         attackers.each do |attacker|
-            attacker.attack(target)
-            break unless target.alive
+          attacker.attack(target)
+          break unless target.alive
         end
 
         if not target.alive
-            attackers.each { |attacker| attacker.reward(target, attackers.size) }
-            @players.delete(target)
-            @proxies.delete(target.proxy)
+          attackers.each { |attacker| attacker.reward(target, attackers.size) }
+          @players.delete(target)
+          @proxies.delete(target.proxy)
         end
       end
 
@@ -80,7 +80,7 @@ class Game
       # Print stats
       puts "Stats:"
       @proxies.sort_by { |p| [-p.stats[:experience], p.to_s] }.each do |p|
-          puts "\t#{p}: #{p.stats}"
+        puts "\t#{p}: #{p.stats}"
       end
       puts 
 
