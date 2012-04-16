@@ -12,6 +12,16 @@ Fork this repo and commit a module inside the `/players` directory. The module i
 
 2. `to_s` (optional) returns the name of the player.
 
+Order of Play
+-------------
+
+The player order is shuffled each round. If multiple players attack the same opponent, the attacks are grouped so that the largest group attacks first and then remaining attackers are random (thanks to @iyonius).
+
+Levelling Up
+------------
+
+For each conquered opponent, the attacker gains the amount of experience equal to the opponent's max health. Group attackers split the experience equally. If a player's experience crosses the threshold for levelling up, that player's max health, strength, and defence will all be increased (according to the schedule in `engine/player.rb`).
+
 Exploring
 ---------
 
@@ -46,46 +56,51 @@ Winners
 
 ### Sprint (`./multi_run.rb -r 1000 -o 10`)
 
-    Jayaram won 522 times
-    Mighty Snuderl won 288 times
-    Valentin won 67 times
-    *noob* won 41 times
-    Jack won 31 times
-    strax won 22 times
-    Angry Mamay won 16 times
-    Izidor won 7 times
-    South Pole Steve won 5 times
-    Kabutomushi won 1 times
+    *noob* won 342 times
+    Izidor won 224 times
+    strax won 210 times
+    Angry Mamay won 143 times
+    KurSe won 81 times
 
 ### Race (`./multi_run.rb -r 1000 -o 100`)
 
-    Cossack Mamay won 470 times
-    Chuck Norris won 156 times
-    South Pole Steve won 112 times
-    *noob* won 101 times
-    Kabutomushi won 66 times
-    Angry Mamay won 29 times
-    Mighty Snuderl won 28 times
-    Michael won 13 times
-    Izidor won 13 times
-    Jack won 6 times
-    Eric the Kill Steal won 5 times
-    Jayaram won 1 times
+    Cossack Mamay won 191 times
+    South Pole Steve won 163 times
+    Jack won 160 times
+    Chuck Norris won 157 times
+    | Drowsy Leo | won 154 times
+    Izidor won 42 times
+    Eric the Kill Steal won 36 times
+    Sir Samsonite won 34 times
+    Jayaram won 24 times
+    *No rest for the wicked* won 10 times
+    Valentin won 7 times
+    *noob* won 6 times
+    Kabutomushi won 4 times
+    flipback won 3 times
+    Angry Mamay won 3 times
+    Michael won 2 times
+    Mighty Snuderl won 2 times
+    rots won 1 times
+    KurSe won 1 times
 
 ### Endurance (`./multi_run.rb -r 1000 -o 1000`)
 
-    Cossack Mamay won 429 times
-    Chuck Norris won 172 times
-    *noob* won 104 times
-    South Pole Steve won 102 times
-    Kabutomushi won 70 times
-    Michael won 28 times
-    Angry Mamay won 27 times
-    Mighty Snuderl won 25 times
-    Eric the Kill Steal won 13 times
-    Izidor won 13 times
-    Jack won 8 times
-    Sir Samsonite won 6 times
-    Crazy Carl won 1 times
+    Chuck Norris won 199 times
+    Jack won 155 times
+    Cossack Mamay won 155 times
+    South Pole Steve won 154 times
+    | Drowsy Leo | won 117 times
+    Sir Samsonite won 92 times
+    Izidor won 39 times
+    Eric the Kill Steal won 22 times
+    Jayaram won 17 times
+    *No rest for the wicked* won 13 times
+    Angry Mamay won 9 times
+    Michael won 8 times
+    Valentin won 7 times
+    flipback won 5 times
+    *noob* won 4 times
+    Mighty Snuderl won 2 times
     jimworm won 1 times
-    Jayaram won 1 times
+    Kabutomushi won 1 times
