@@ -41,6 +41,10 @@ Rules
 1. No cheating by overriding classes, methods, or instance variables.
 2. Cheating players will be moved to the cheaters/ directory.
 
+@DanKnox came up with a dominating technique that involves dynamically creating multiple player modules. In order to mitigate the strength of this technique, a third rule seems necessary:
+
+3. No more than 3 player instances per Github account.
+
 Running the simulation
 ----------------------
 
@@ -51,56 +55,7 @@ Winning
 
 The player with the highest level and experience wins. 
 
-Winners
+Winner
 -------
 
-### Sprint (`./multi_run.rb -r 1000 -o 10`)
-
-    *noob* won 342 times
-    Izidor won 224 times
-    strax won 210 times
-    Angry Mamay won 143 times
-    KurSe won 81 times
-
-### Race (`./multi_run.rb -r 1000 -o 100`)
-
-    Cossack Mamay won 191 times
-    South Pole Steve won 163 times
-    Jack won 160 times
-    Chuck Norris won 157 times
-    | Drowsy Leo | won 154 times
-    Izidor won 42 times
-    Eric the Kill Steal won 36 times
-    Sir Samsonite won 34 times
-    Jayaram won 24 times
-    *No rest for the wicked* won 10 times
-    Valentin won 7 times
-    *noob* won 6 times
-    Kabutomushi won 4 times
-    flipback won 3 times
-    Angry Mamay won 3 times
-    Michael won 2 times
-    Mighty Snuderl won 2 times
-    rots won 1 times
-    KurSe won 1 times
-
-### Endurance (`./multi_run.rb -r 1000 -o 1000`)
-
-    Chuck Norris won 199 times
-    Jack won 155 times
-    Cossack Mamay won 155 times
-    South Pole Steve won 154 times
-    | Drowsy Leo | won 117 times
-    Sir Samsonite won 92 times
-    Izidor won 39 times
-    Eric the Kill Steal won 22 times
-    Jayaram won 17 times
-    *No rest for the wicked* won 13 times
-    Angry Mamay won 9 times
-    Michael won 8 times
-    Valentin won 7 times
-    flipback won 5 times
-    *noob* won 4 times
-    Mighty Snuderl won 2 times
-    jimworm won 1 times
-    Kabutomushi won 1 times
+    Dan Knox
