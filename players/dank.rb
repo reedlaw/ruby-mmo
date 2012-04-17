@@ -73,7 +73,9 @@
       end
 
       def boss_lacks_experience?
-        stats[:experience] < most_experienced_minion.stats[:experience]
+        potential_boss = most_experienced_minion || (return false)
+        return false unless potential_boss.respond_to?(:stats)
+        stats[:experience] < potential_boss.stats[:experience]
       end
 
       def prepare_friendlies
