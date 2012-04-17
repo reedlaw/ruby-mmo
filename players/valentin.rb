@@ -8,15 +8,14 @@ module Valentin
 
     return [:attack, kill] unless kill.nil?
 
-    best_opponent = opponents.max { |a, b| a.stats[:experience] <=> b.stats[:experience] }
-    in_advantage = self.stats[:experience] > best_opponent.stats[:experience]
+    weakest_opponent = opponents.min { |a, b| a.stats[:health] <=> b.stats[:health] }
 
-    if self.stats[:health] <= opponents.count * points && in_advantage
+    if !weakest_opponent.nil? && self.stats[:health] <= weakest_opponent.stats[:health]
       return [:rest]
     end
 
-    weakest_opponent = opponents.min { |a, b| a.stats[:health] <=> b.stats[:health] }
     return [:attack, weakest_opponent] unless weakest_opponent.nil?
+
   end
 
   private
@@ -26,7 +25,10 @@ module Valentin
   end
 
   def kill
-    opponents.select{|p| p!=self}.select{|p| killable? p}.first
+    players_to_die = opponents.select{|p| p!=self}.select{|p| killable? p}
+    if players_to_die.count > 0
+      return players_to_die[rand(players_to_die.count - 1)]
+    end
   end
 
   def killable? player
