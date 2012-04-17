@@ -55,7 +55,7 @@ Winning
 
 The player with the highest level and experience wins. 
 
-Winner
+Winners
 -------
 
 ### Sprint (`./multi_run.rb -r 1000 -o 10`)
