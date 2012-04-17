@@ -12,6 +12,16 @@ Fork this repo and commit a module inside the `/players` directory. The module i
 
 2. `to_s` (optional) returns the name of the player.
 
+Order of Play
+-------------
+
+The player order is shuffled each round. If multiple players attack the same opponent, the attacks are grouped so that the largest group attacks first and then remaining attackers are random (thanks to @iyonius).
+
+Levelling Up
+------------
+
+For each conquered opponent, the attacker gains the amount of experience equal to the opponent's max health. Group attackers split the experience equally. If a player's experience crosses the threshold for levelling up, that player's max health, strength, and defence will all be increased (according to the schedule in `engine/player.rb`).
+
 Exploring
 ---------
 
@@ -28,8 +38,12 @@ There is also a method `alive` that returns false if the player is dead.
 Rules
 -----
 
-1. No cheating by overriding classes or instance variables.
+1. No cheating by overriding classes, methods, or instance variables.
 2. Cheating players will be moved to the cheaters/ directory.
+
+@DanKnox came up with a dominating technique that involves dynamically creating multiple player modules. In order to mitigate the strength of this technique, a third rule seems necessary:
+
+3. No more than 3 player instances per Github account.
 
 Running the simulation
 ----------------------
@@ -41,17 +55,7 @@ Winning
 
 The player with the highest level and experience wins. 
 
-Winners
+Winner
 -------
 
-The game can be run 1000 times using `./multi_run.rb`
-
-On it's last run these were the results:
-
-    Eric the Kill Steal won 272 times
-    strax won 247 times
-    A Tabby Cat won 226 times
-    Ian Terrell won 185 times
-    Valentin won 39 times
-    Izidor won 21 times
-    *No rest for the wicked* won 10 times
+    Dan Knox
