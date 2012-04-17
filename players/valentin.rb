@@ -1,24 +1,41 @@
 module Valentin
+
   def to_s
     "Valentin"
   end
-  def move
-    max_health = 100
-    points  = self.stats[:strength] - self.stats[:defense]/2
 
-    kill = Game.world[:players].select{|p| p!=self && p.stats[:health] <= points && p.alive}.first
+  def move
+
     return [:attack, kill] unless kill.nil?
 
-    opponents = Game.world[:players].select{|p| p!=self && p.alive && p.to_s != 'rat'}
+    weakest_opponent = opponents.min { |a, b| a.stats[:health] <=> b.stats[:health] }
 
-    best_opponent = opponents.max { |a, b| a.stats[:experience] <=> b.stats[:experience] }
-    in_advantage = self.stats[:experience] > best_opponent.stats[:experience]
-
-    if self.stats[:health] <= opponents.count * points && in_advantage
+    if !weakest_opponent.nil? && self.stats[:health] <= weakest_opponent.stats[:health]
       return [:rest]
     end
 
-    weakest_opponent = opponents.min { |a, b| a.stats[:health] <=> b.stats[:health] }
     return [:attack, weakest_opponent] unless weakest_opponent.nil?
+
+  end
+
+  private
+
+  def points
+    stats[:strength] - stats[:defense]/2
+  end
+
+  def kill
+    players_to_die = opponents.select{|p| p!=self}.select{|p| killable? p}
+    if players_to_die.count > 0
+      return players_to_die[rand(players_to_die.count - 1)]
+    end
+  end
+
+  def killable? player
+    player.stats[:health] <= points
+  end
+
+  def opponents
+    Game.world[:players].select{|p| p!=self}
   end
 end
