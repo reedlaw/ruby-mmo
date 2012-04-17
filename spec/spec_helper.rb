@@ -38,8 +38,8 @@ def load_all_players_and_monsters
   end
 end
 
-def commence_round
-  @game.round(1)
+def commence_rounds(num)
+  @game.round(num)
 end
 
 def silence_output
