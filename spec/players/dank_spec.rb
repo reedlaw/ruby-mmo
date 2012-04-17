@@ -4,7 +4,7 @@ def load_players_for_dan
   test_mod = mock('Dank0')
   @boss = create_player_for_module(Dank0)
   @minions = []
-  (1..9).each do |n|
+  (1..2).each do |n|
     mod = Object::const_get("Dank#{n}")
     @minions << create_player_for_module(mod)
   end
@@ -17,6 +17,10 @@ end
 
 describe Dank0, "The Boss" do  
   before(:each) { start_game and load_players_for_dan and silence_output }
+  
+  it "shouldnt have more than 3 player instances total" do
+    @minions.count.should == 2
+  end
   
   describe "#to_s" do
     it "should have the correct name for the boss" do

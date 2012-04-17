@@ -1,4 +1,4 @@
-(0..9).each do |n|
+(0..2).each do |n|
   eval %(
     module Dank#{n}
       BOSS_DANGER_ZONE = 90
