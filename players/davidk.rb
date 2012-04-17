@@ -1,47 +1,24 @@
 module DavidK
-  # `move` recursion call mitigation
-  def self.extended(base)
-    base.instance_variable_set :@move_call_depth, 0
-    base.instance_variable_set :@move_callee, nil
-  end
-
   def to_s
     "david k"
   end
-
-  def change_name(opponents)
-    @name_changed = true
-    singleton_class = class << self; self; end;
-    player_names = opponents.map {|x| x.to_s}.join(" ")
-    singleton_class.instance_eval do
-      define_method(:to_s) do
-        return player_names
-      end
-    end
-  end
   
   def move
+    # return bogus data if we are being called by anything other than game.rb
+    return [:attack, self] unless caller[0] =~ /game\.rb/
     all_opponents = Game.world[:players].select {|p| p != self}
-    # change_name(all_opponents) unless @name_changed
     action = [:rest] # rest is the default
-    if (@move_call_depth += 1) > 1
-      @move_call_depth -= 1
-      return [:attack, self]
-    end
     # if less than 3 opponents then go all out
     opponent = pick_opponent(all_opponents)
     if all_opponents.length < 3
-      @move_call_depth -= 1
       return [:attack, opponent]
     end
     if stats[:health] <= 80 && rand < 0.2
-      @move_call_depth -= 1
       return action
     end
     if opponent && stats[:health] >= 95
   	  action = [:attack, opponent]
     end
-    @move_call_depth -= 1
     return action
   end
 
