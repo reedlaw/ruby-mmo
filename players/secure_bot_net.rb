@@ -11,7 +11,7 @@ module SecuBot
   def self.extended(base)
     base.instance_variable_set :@friends, []
     base.instance_variable_set :@challengers, Hash.new(0)
-    base.instance_variable_set :@enemies
+    base.instance_variable_set :@enemies, []
   end
   
   def to_s
@@ -24,8 +24,6 @@ module SecuBot
   
   def redefine_move
     all_players = Game.world[:players].reject {|p| p == self || @friends.include?(p) || @enemies.include?(p)}
-    # reject any enemies or freinds from consideration
-    # assign random req/resp pairs to each player
     tagged_players = all_players.map {|p| [p, rand(secrets_length)]}
     # see who responds to challenge
     tagged_players.select! do |pair| 
@@ -51,29 +49,66 @@ module SecuBot
     end
     # whoever we challenged is either already an enemy or a friend
     # so we are no longer going to get any challenge requests or send out friend requests
+    remove_instance_variable :@challengers # remove reference to challengers
     class << self
-      undef_method :verify
-      undef_method :challenge
-      undef_method :friend_request
+      undef_method :verify # don't let in any verify requests
+      undef_method :challenge # don't let in any challenge requests
+      undef_method :friend_request # no more friend requests
       
-      define_method(:move) do
-        
+      # we now define a coordination function to let our friends set targets
+      def coordinate(target, requester)
+        if @friends.include?(requester) # the request is by a friend so we accept
+          @target = target
+        end
+      end
+      
+      def move
+        # filter our friends and enemies down to players that are still alive
+        @friends.select! {|friend| friend.alive?}
+        @enemies.select! {|enemy| enemy.alive?}
+        if @target && @target.alive? # target is alive so attack
+          [:attack, @target]
+        else
+          if (new_target = find_new_target) # find somebody we can kill
+            @target = new_target
+            @friends.each {|friend| friend.coordinate(new_target, self)}
+            [:attack, new_target]
+          else
+            [:rest]
+          end
+        end
+      end
+      
+      def find_new_target
+        # find somebody we can collectively kill in 1 hit or 2 hits
+        # if there is no such player then either rest or attack somebody randomly
+        collective_strength = self.stats[:strength] + \
+          @friends.reduce(0) {|acc, friend| acc + friend.stats[:strength]}
+        health_cache = Hash.new
+        defense_cache = Hash.new
+        @enemies.sort! do |a,b| 
+          a_hp, a_def = (health_cache[a] ||= a.stats[:health]), (defense_cache[a] ||= a.stats[:defense])
+          b_hp, b_def =(health_cache[b] ||= b.stats[:health]), (defense_cache[b] ||= b.stats[:defense])
+          [a_hp, a_def] <=> [b_hp, b_def]
+        end
       end
     end
-    # we also no longer need to track challengers
-    remove_instance_variable :@challengers
-    # we need to redefine move to do what we want it to do instead of repeating the above
   end
   
   # super secret way of performing challenge verifications
-  def verify(req, answer)
-    secrets[req] == answer
+  def verify(req, answer, player)
+    @challengers[player][req,answer]
   end
   
-  # we request to see the player because we are going to challenge the player as well
+  # we request to see the player because we want to track how often they have challenged us
   def challenge(challenge_req, player)
-    if (@challengers[player] += 1) == 1 # every player gets only 1 challenge
-      secrets[challenge]
+    if !@challengers[player] # every player gets only 1 challenge request
+      verification_closure = lambda do |req,answer|
+        @challengers[player] = lambda {|q,a| false}
+        secrets[req] == answer
+      end
+      @challengers[player] = verification_closure
+      secrets[challenge_req]
     else # this person tried to challenge us more than once, so automatically an enemy
       @enemies << player
     end
@@ -87,4 +122,5 @@ module SecuBot
       @enemies << player
     end
   end
+  
 end
