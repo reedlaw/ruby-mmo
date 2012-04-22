@@ -1,3 +1,4 @@
+require 'pry'
 # identification secrets
 secrets = (1..(10 + rand(10))).map { rand(100000) }
 secrets_length = secrets.length
