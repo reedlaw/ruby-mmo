@@ -1,4 +1,3 @@
-require 'pry'
 # identification secrets
 secrets = (1..(10 + rand(10))).map { rand(100000) }
 secrets_length = secrets.length
@@ -54,7 +53,7 @@ SecuBotNumberGoesHere.module_eval do
       enemies = Game.world[:players].reject {|p| friends.include?(p) || p == self}
       hp = {}
       enemies.sort! {|a,b| (hp[a] ||= a.stats[:health]) <=> (hp[b] ||= b.stats[:health])}
-      enemies.select! {|e| hp[e] <= (collective_strength - e.stats[:defense] / 2)}
+      enemies.select! {|e| (hp[e] || 0) <= (collective_strength - e.stats[:defense] / 2)}
       return enemies[0], friends
     end
     
