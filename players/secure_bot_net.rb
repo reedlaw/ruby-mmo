@@ -8,7 +8,6 @@ rest_message = rand(1000000)
 # will be used for the eval string so that secrets and initial_contact_password_resolve
 context = binding
 
-
 template = <<-EOF
 module SecuBotNumberGoesHere
 end
@@ -31,10 +30,15 @@ SecuBotNumberGoesHere.module_eval do
         @target, friends = find_new_target
         random_key = rand(secrets_length)
         friends.each {|f| f.set_target(attack_message ^ secrets[random_key], random_key, @target)}
-        if @target && stats[:health] >= 90
-          [:attack, @target]
-        elsif stats[:health] >= 60
-          [:attack, Game.world[:players].reject {|p| p == self || friends.include?(p)}[0]]
+        if @target
+          my_hp = stats[:health]
+          if my_hp >= 90
+            [:attack, @target]
+          elsif my_hp >= 60 && (enemy = Game.world[:players].reject {|p| p == self || friends.include?(p)})[0]
+            [:attack, enemy]
+          else
+            [:rest]
+          end
         else
           [:rest]
         end
@@ -49,7 +53,7 @@ SecuBotNumberGoesHere.module_eval do
       enemies = Game.world[:players].reject {|p| friends.include?(p) || p == self}
       hp = {}
       enemies.sort! {|a,b| (hp[a] ||= a.stats[:health]) <=> (hp[b] ||= b.stats[:health])}
-      enemies.select! {|e| hp[e] <= (collective_strength - e.stats[:defense] / 2)}
+      enemies.select! {|e| (hp[e] || 0) <= (collective_strength - e.stats[:defense] / 2)}
       return enemies[0], friends
     end
     
