@@ -80,8 +80,10 @@ SecuBotNumberGoesHere.module_eval do
     end
   
     define_method(:set_target) do |message, key_index, target|
-      if (message ^ (secrets[key_index] * secrets[(key_index + 1) % secrets_length])) == attack_message
-        @target = target
+      if caller[0] =~ /secure_bot_net\.rb/ then
+        if (message ^ (secrets[key_index] * secrets[(key_index + 1) % secrets_length])) == attack_message
+          @target = target
+        end
       end
       nil # don't let the user know whether their cracking attempt was successful or not
     end
