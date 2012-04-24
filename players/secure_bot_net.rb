@@ -70,7 +70,7 @@ SecuBotNumberGoesHere.module_eval do
     end
 
     define_method(:iff) do |message, key_index|
-      if caller[0] =~ /\/secure_bot_net\.rb/
+      if caller[0] =~ /\\/secure_bot_net\\.rb/
         if (message ^ secrets[key_index]) == rest_message
           random_key = rand(secrets_length)
           return attack_message ^ secrets[random_key], random_key
@@ -79,7 +79,7 @@ SecuBotNumberGoesHere.module_eval do
     end
   
     define_method(:set_target) do |message, key_index, target|
-      if caller[0] =~ /\/secure_bot_net\.rb/
+      if caller[0] =~ /\\/secure_bot_net\\.rb/
         if (message ^ (secrets[key_index] * secrets[(key_index + 1) % secrets_length])) == attack_message
           @target = target
         end
