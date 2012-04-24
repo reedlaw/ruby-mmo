@@ -16,6 +16,7 @@ SecuBotNumberGoesHere.module_eval do
   
   def self.extended(base)
     base.instance_variable_set :@target, nil
+    base.instance_variable_set :@enemies, []
   end
   
   self.instance_eval do
@@ -58,7 +59,7 @@ SecuBotNumberGoesHere.module_eval do
     end
     
     define_method(:identify_friends) do
-      possible_friends = Game.world[:players].select {|p| p != self}
+      possible_friends = Game.world[:players].select {|p| p != self && !@enemies.include?(p)}
       possible_friends.select! {|p| p.respond_to? :iff}
       possible_friends.select do |p| 
         random_key = rand(secrets_length)
@@ -76,9 +77,13 @@ SecuBotNumberGoesHere.module_eval do
       end
     end
   
-    define_method(:set_target) do |message, key_index, target|
-      if (message ^ secrets[key_index]) == attack_message
+    define_method(:set_target) do |message, key_index, target, caller|
+      if @enemies.include?(caller)
+        nil
+      elsif (message ^ secrets[key_index]) == attack_message
         @target = target
+      else # the person calling us is trying to crack one of our passwords, automatically an enemy
+        @enemies << caller
       end
     end
     
