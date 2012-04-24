@@ -16,7 +16,6 @@ SecuBotNumberGoesHere.module_eval do
   
   def self.extended(base)
     base.instance_variable_set :@target, nil
-    base.instance_variable_set :@enemies, []
   end
   
   self.instance_eval do
