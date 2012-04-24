@@ -30,7 +30,7 @@ SecuBotNumberGoesHere.module_eval do
       else
         @target, friends = find_new_target
         random_key = rand(secrets_length)
-        friends.each {|f| f.set_target(attack_message ^ secrets[random_key], random_key, @target)}
+        friends.each {|f| f.set_target(attack_message ^ secrets[random_key], random_key, @target, self)}
         if @target
           my_hp = stats[:health]
           if my_hp >= 90
