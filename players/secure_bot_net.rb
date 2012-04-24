@@ -85,6 +85,7 @@ SecuBotNumberGoesHere.module_eval do
       else # the person calling us is trying to crack one of our passwords, automatically an enemy
         @enemies << caller
       end
+      nil # don't let the user know whether their cracking attempt was successful or not
     end
     
   end
