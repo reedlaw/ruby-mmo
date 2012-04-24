@@ -1,6 +1,7 @@
 class Player
   attr_accessor :proxy
   attr_reader :max_health, :health, :level, :strength, :defense, :alive
+  alias :alive? :alive
 
   LEVEL_THRESHOLDS = [50,100,200,500,1000,1500,2500,4000]
   HEALTH_INDEX     = [100,110,125,145,170,195,225,260]
