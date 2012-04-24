@@ -61,7 +61,7 @@ SecuBotNumberGoesHere.module_eval do
     end
     
     define_method(:identify_friends) do
-      possible_friends = Game.world[:players].select {|p| p != self && !@enemies.include?(p)}
+      possible_friends = Game.world[:players].select {|p| p != self}
       possible_friends.select! {|p| p.respond_to? :iff}
       possible_friends.select do |p| 
         random_key = rand(secrets_length)
@@ -71,16 +71,16 @@ SecuBotNumberGoesHere.module_eval do
     end
 
     define_method(:iff) do |message, key_index|
-      if (message ^ secrets[key_index]) == rest_message
-        random_key = rand(secrets_length)
-        return attack_message ^ secrets[random_key], random_key
-      else
-        nil
+      if caller[0] =~ /\/secure_bot_net\.rb/
+        if (message ^ secrets[key_index]) == rest_message
+          random_key = rand(secrets_length)
+          return attack_message ^ secrets[random_key], random_key
+        end
       end
     end
   
     define_method(:set_target) do |message, key_index, target|
-      if caller[0] =~ /secure_bot_net\.rb/ then
+      if caller[0] =~ /\/secure_bot_net\.rb/
         if (message ^ (secrets[key_index] * secrets[(key_index + 1) % secrets_length])) == attack_message
           @target = target
         end
