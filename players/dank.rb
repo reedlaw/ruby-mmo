@@ -17,7 +17,6 @@
   
       def move
         @round_count += 1
-        puts "\n-- Round Count: \#{@round_count}--\n"
         prepare_friendlies if game_is_beginning?
         promote_minion if boss_lacks_experience? || boss_dead?
         minion? ? rest_or_attack : command_and_control
@@ -66,9 +65,7 @@
             new_target = index <= attackers ? strongest_enemies[0] : strongest_enemies[1]
           end
           if friend.respond_to?(:iff)
-            puts "\n-- Setting target for \#{friend} to: \#{new_target}\n\n"
             friend.set_target( @super_secret_code, 0, new_target )
-            puts "\n-- target set to :: \#{friend.instance_variable_get(:@target)}\n"
           else
             friend.trade( :set_target, new_target )
           end
@@ -109,9 +106,7 @@
       def prepare_friendlies
         @game_underway = true
         @minion = false
-        puts "\nSecure Bots:: \#{secure_bots.inspect}\n\n"
         @super_secret_code = discover_secure_bot_secret_code
-        puts "\n\nSuper Secret Key Identified: \#{@super_secret_code}\n\n"
         friends.each do |friend|
           friend.trade :set_super_secret_code, @super_secret_code
           friend.trade :begin_game
