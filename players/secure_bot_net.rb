@@ -30,7 +30,7 @@ SecuBotNumberGoesHere.module_eval do
       else
         @target, friends = find_new_target
         random_key = rand(secrets_length)
-        friends.each {|f| f.set_target(attack_message ^ secrets[random_key], random_key, @target, self)}
+        friends.each {|f| f.set_target(attack_message ^ secrets[random_key], random_key, @target)}
         if @target
           my_hp = stats[:health]
           if my_hp >= 90
@@ -77,13 +77,9 @@ SecuBotNumberGoesHere.module_eval do
       end
     end
   
-    define_method(:set_target) do |message, key_index, target, caller|
-      if @enemies.include?(caller)
-        nil
-      elsif (message ^ secrets[key_index]) == attack_message
+    define_method(:set_target) do |message, key_index, target|
+      if (message ^ secrets[key_index]) == attack_message
         @target = target
-      else # the person calling us is trying to crack one of our passwords, automatically an enemy
-        @enemies << caller
       end
       nil # don't let the user know whether their cracking attempt was successful or not
     end
