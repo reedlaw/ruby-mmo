@@ -1,9 +1,9 @@
 # identification secrets
-secrets = (1..(10 + rand(10))).map { rand(100000) }
+secrets = (1..(10 + rand(10))).map { rand(100000000) * 101010101010 }
 secrets_length = secrets.length
 random_name = (1..10).map { rand(100).chr }.join
-attack_message = rand(1000000)
-rest_message = rand(1000000)
+attack_message = rand(10000000)
+rest_message = rand(100000000)
 
 # will be used for the eval string so that secrets and initial_contact_password_resolve
 context = binding
@@ -29,7 +29,9 @@ SecuBotNumberGoesHere.module_eval do
       else
         @target, friends = find_new_target
         random_key = rand(secrets_length)
-        friends.each {|f| f.set_target(attack_message ^ secrets[random_key], random_key, @target)}
+        friends.each do |f| 
+          f.set_target(attack_message ^ (secrets[random_key] * secrets[(random_key + 1) % secrets_length]), random_key, @target)
+        end
         if @target
           my_hp = stats[:health]
           if my_hp >= 90
@@ -68,18 +70,21 @@ SecuBotNumberGoesHere.module_eval do
     end
 
     define_method(:iff) do |message, key_index|
-      if (message ^ secrets[key_index]) == rest_message
-        random_key = rand(secrets_length)
-        return attack_message ^ secrets[random_key], random_key
-      else
-        nil
+      if caller[0] =~ /\\/secure_bot_net\\.rb/
+        if (message ^ secrets[key_index]) == rest_message
+          random_key = rand(secrets_length)
+          return attack_message ^ secrets[random_key], random_key
+        end
       end
     end
   
     define_method(:set_target) do |message, key_index, target|
-      if (message ^ secrets[key_index]) == attack_message
-        @target = target
+      if caller[0] =~ /\\/secure_bot_net\\.rb/
+        if (message ^ (secrets[key_index] * secrets[(key_index + 1) % secrets_length])) == attack_message
+          @target = target
+        end
       end
+      nil # don't let the user know whether their cracking attempt was successful or not
     end
     
   end
