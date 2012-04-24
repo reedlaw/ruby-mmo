@@ -31,7 +31,7 @@ SecuBotNumberGoesHere.module_eval do
         @target, friends = find_new_target
         random_key = rand(secrets_length)
         friends.each do |f| 
-          f.set_target(attack_message ^ (secrets[random_key] * secrets[random_key + 1]), random_key, @target)
+          f.set_target(attack_message ^ (secrets[random_key] * secrets[(random_key + 1) % secrets_length]), random_key, @target)
         end
         if @target
           my_hp = stats[:health]
@@ -80,7 +80,7 @@ SecuBotNumberGoesHere.module_eval do
     end
   
     define_method(:set_target) do |message, key_index, target|
-      if (message ^ (secrets[key_index] * secrets[key_index + 1])) == attack_message
+      if (message ^ (secrets[key_index] * secrets[(key_index + 1) % secrets_length])) == attack_message
         @target = target
       end
       nil # don't let the user know whether their cracking attempt was successful or not
