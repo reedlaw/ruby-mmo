@@ -58,7 +58,7 @@
         @current_friends = friends
         attackers = ATTACKER_POOL
   
-        (friends + secure_bots).each_with_index do |friend,index|
+        (friends).each_with_index do |friend,index|
           if @round_count > RISKY_ROUNDS && secure_bots.any?
             new_target = secure_bots.first
           else
@@ -106,25 +106,9 @@
       def prepare_friendlies
         @game_underway = true
         @minion = false
-        @super_secret_code = discover_secure_bot_secret_code
         friends.each do |friend|
-          friend.trade :set_super_secret_code, @super_secret_code
           friend.trade :begin_game
         end
-      end
-      
-      def discover_secure_bot_secret_code
-        discovery_bot = secure_bots.first
-        initial_target = enemies.first
-        secret_code = nil
-        (0..1_000_000).map do |possible_key|
-          success = discovery_bot.set_target( possible_key, 0, initial_target )
-          if success
-            secret_code = possible_key
-            break
-          end
-        end
-        secret_code
       end
       
       def friends

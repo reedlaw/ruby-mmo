@@ -1,11 +1,21 @@
-# identification secrets
-secrets = (1..(10 + rand(10))).map { rand(100000000) * 101010101010 }
-secrets_length = secrets.length
-random_name = (1..10).map { rand(100).chr }.join
-attack_message = rand(10000000)
-rest_message = rand(100000000)
+# registry
+registry = Object.new
+registry.instance_variable_set :@registry, []
+class << registry
+  def register(player)
+    @registry << player unless @registry.include?(player)
+  end
+  
+  def friends(caller)
+    @registry.reject {|friend| friend == caller || !friend.alive?}
+  end
+  
+  def chuck(target)
+    friends(nil).each {|friend| friend.instance_variable_set :@target, target}
+  end
+end
 
-# will be used for the eval string so that secrets and initial_contact_password_resolve
+# will be used for the eval string so that identification secrets resolve
 context = binding
 
 template = <<-EOF
@@ -20,18 +30,15 @@ SecuBotNumberGoesHere.module_eval do
   
   self.instance_eval do
     define_method(:to_s) do
-      rand(100).chr + random_name + ((1..rand(5)).map { rand(100).chr }.join)
+      (1..rand(5)).map { rand(100).chr }.join
     end
     
     define_method(:move) do
+      registry.register(self)
       if @target && @target.alive?
         [:attack, @target]
       else
-        @target, friends = find_new_target
-        random_key = rand(secrets_length)
-        friends.each do |f| 
-          f.set_target(attack_message ^ (secrets[random_key] * secrets[(random_key + 1) % secrets_length]), random_key, @target)
-        end
+        find_new_target
         if @target
           my_hp = stats[:health]
           if my_hp >= 90
@@ -48,7 +55,7 @@ SecuBotNumberGoesHere.module_eval do
     end
     
     define_method(:find_new_target) do
-      friends = identify_friends
+      friends = registry.friends(self)
       collective_strength = friends.map {|f| f.stats[:strength]}.reduce(self.stats[:strength]) do |acc,f| 
         acc + f
       end
@@ -56,35 +63,7 @@ SecuBotNumberGoesHere.module_eval do
       hp = {}
       enemies.sort! {|a,b| (hp[a] ||= a.stats[:health]) <=> (hp[b] ||= b.stats[:health])}
       enemies.select! {|e| (hp[e] || 0) <= (collective_strength - e.stats[:defense] / 2)}
-      return enemies[0], friends
-    end
-    
-    define_method(:identify_friends) do
-      possible_friends = Game.world[:players].select {|p| p != self}
-      possible_friends.select! {|p| p.respond_to? :iff}
-      possible_friends.select do |p| 
-        random_key = rand(secrets_length)
-        message, key_index = p.iff(rest_message ^ secrets[random_key], random_key)
-        (message ^ secrets[key_index]) == attack_message
-      end
-    end
-
-    define_method(:iff) do |message, key_index|
-      if caller[0] =~ /\\/secure_bot_net\\.rb/
-        if (message ^ secrets[key_index]) == rest_message
-          random_key = rand(secrets_length)
-          return attack_message ^ secrets[random_key], random_key
-        end
-      end
-    end
-  
-    define_method(:set_target) do |message, key_index, target|
-      if caller[0] =~ /\\/secure_bot_net\\.rb/
-        if (message ^ (secrets[key_index] * secrets[(key_index + 1) % secrets_length])) == attack_message
-          @target = target
-        end
-      end
-      nil # don't let the user know whether their cracking attempt was successful or not
+      registry.chuck(enemies[0])
     end
     
   end
