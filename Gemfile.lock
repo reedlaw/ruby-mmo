@@ -1,17 +1,16 @@
 GEM
   remote: http://rubygems.org/
   specs:
-    columnize (0.3.6)
-    debugger (1.1.1)
-      columnize (>= 0.3.1)
-      debugger-linecache (~> 1.1)
-      debugger-ruby_core_source (~> 1.1)
-    debugger-linecache (1.1.1)
-      debugger-ruby_core_source (>= 1.1.1)
-    debugger-ruby_core_source (1.1.1)
+    celluloid (0.12.4)
+      facter (>= 1.6.12)
+      timers (>= 1.0.0)
+    facter (1.6.17)
+    lspace (0.6)
+    timers (1.1.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  debugger
+  celluloid
+  lspace

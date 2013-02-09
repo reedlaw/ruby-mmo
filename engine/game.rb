@@ -1,5 +1,5 @@
 class Game
-  attr_reader :players, :proxies
+  attr_reader :players
 
   class << self
     attr_accessor :world
@@ -7,7 +7,6 @@ class Game
 
   def initialize
     @players = []
-    @proxies = []
   end
 
   def round(count)
