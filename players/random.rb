@@ -1,7 +1,6 @@
 module RandomPlayer
   def move
-    # [:rest, :attack].sample
-    LSpace[:world][:players]
+    [:rest, :attack].sample
   end
 
   def name

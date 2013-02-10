@@ -3,21 +3,10 @@ class Player
   include Celluloid
   lspace_reader :world
 
-  def world
-    LSpace[:world]
-  end
-
-  def get_move
+  def safe_send(method)
     proc {
       $SAFE = 4
-      Actor.current.move
-    }.call
-  end
-
-  def get_name
-    proc {
-      $SAFE = 4
-      Actor.current.name
+      Actor.current.send(method)
     }.call
   end
 end
