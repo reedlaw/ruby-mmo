@@ -28,7 +28,7 @@ modules = []
 ObjectSpace.each_object(Module) {|m| modules << m.name }
 safe_require_dir("players")
 player_modules = []
-ObjectSpace.each_object(Module) do |m| 
+ObjectSpace.each_object(Module) do |m|
   player_modules << m.name unless modules.include?(m.name)
 end
 # Remove the safe_send method from player modules to prevent cheating
@@ -63,23 +63,37 @@ real_world = {
   number_of_players: 2
 }
 
+i = 1
+
+players = {}
+player_modules.each do |m|
+  ms = m.to_sym
+  player = Player.new
+  player.extend Object.const_get(m)
+  players[ms] = { player: player }
+  players[ms][:move] = players[ms][:player].future.safe_send(:move)
+  puts players[ms][:move].class
+  puts players[ms][:move].ready?
+end
+
 10.times do
-  players = []
-  player_modules.each do |m|
-    player = Player.new
-    players << player
-    player.extend Object.const_get(m)
-    Celluloid::Actor[m.to_sym] = player
-  end
-  real_world[:players] = players.map{|p| p.safe_send(:name)}
+  puts "Round #{i}"
+  i += 1
 
   world = real_world.dup
   world.freeze
 
   LSpace.with(world: world) do
-    players.each do |p|
-      puts "#{p.safe_send(:name)} #{p.safe_send(:move)}"
+    player_modules.each do |m|
+      ms = m.to_sym
+      name = players[ms][:player].safe_send(:name)
+      if players[ms][:move].ready?
+        move = players[ms][:move].value
+        puts "#{name} #{move}"
+        players[ms][:move] = players[ms][:player].future.safe_send(:move)
+      else
+        puts "#{name} not ready"
+      end
     end
   end
 end
-puts "End " + $SAFE.to_s
