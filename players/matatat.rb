@@ -7,9 +7,9 @@ module Matatat
 		if( 2 < self.stats[:level] < 5)
 			if(health_ratio < 0.3  && my_health > 0)
 				[:attack,healthiest]
-			if(experience_ratio < 0.3 && my_exp > 0)
+			elsif(experience_ratio < 0.3 && my_exp > 0)
 				[:attack,most_experienced]
-			else if (my_health > 20 && rat)
+			elsif(my_health > 20 && rat)
 				[:attack,rat]
 			else
 				[:rest]
@@ -58,8 +58,8 @@ module Matatat
 	end
 
 	def rat
-		rats = others.select(|p| p.to_s == "rat"}
-		if rats.count > 1
+		rats = others.select{|p| p.to_s == "rat"}
+		if(rats.count > 1)
 			rats[1]
 		else
 			false
