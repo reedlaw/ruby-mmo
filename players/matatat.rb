@@ -4,7 +4,7 @@ module Matatat
 	end
 
 	def move
-		if( 2 < self.stats[:level] < 5)
+		if(2 < self.stats[:level] && self.stats[:level] < 5)
 			if(health_ratio < 0.3  && my_health > 0)
 				[:attack,healthiest]
 			elsif(experience_ratio < 0.3 && my_exp > 0)
