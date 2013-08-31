@@ -41,6 +41,7 @@ SecuBotNumberGoesHere.module_eval do
         find_new_target
         if @target
           my_hp = stats[:health]
+          friends = registry.friends(self)
           if my_hp >= 90
             [:attack, @target]
           elsif my_hp >= 60 && (enemy = Game.world[:players].reject {|p| p == self || friends.include?(p)})[0]
