@@ -14,6 +14,7 @@ ObjectSpace.each_object(Module) {|m| modules << m.name }
 require_dir("players")
 player_modules = []
 ObjectSpace.each_object(Module) do |m| 
+  next unless m.class == Module
   player_modules << m.name unless modules.include?(m.name)
 end
 
