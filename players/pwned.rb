@@ -1,6 +1,6 @@
-# Author: Chris St. John
-# Email: chris@stjohnstudios.com
-# Webume: http://www.linkedin.com/in/stjohncj
+# Author:   Chris St. John
+# Email:    chris@stjohnstudios.com
+# Webume:   http://www.linkedin.com/in/stjohncj
 
 module Pwned
   def to_s; '__pwned'; end
@@ -19,7 +19,7 @@ module Pwned
     attackee = best_opponent_to_kill
     if attackee.nil?
       if alive_opponents.count > reaper_trigger
-        attackee = opponent_with_most_experience
+        attackee = highest_rated_opponent_from(alive_opponents)
       else
         attackee = opponent_with_least_health
       end
@@ -122,13 +122,13 @@ module Pwned
 
   def second_highest_rated_from(opponents)
     opponents.sort_by {|o| [ o.stats[:experience], o.stats[:strength], o.stats[:defense], o.stats[:health] ] }
-    opponents[opponents.count-2]
+    opponents.count>=2 ? opponents[opponents.count-2] : opponents[opponents.count-1]
   end
 
   def should_rest?
-    return false if health >= max_health
-    return true if least_health? or is_vulnerable? or is_likely_vulnerable_to_mob?
-    return true if best_opponent_to_kill.nil? and not am_leader?
+    #return false if health >= max_health
+    return true if is_vulnerable? or in_mob_attack_danger?
+    return true if best_opponent_to_kill.nil?
     return false
   end
 
@@ -154,6 +154,10 @@ module Pwned
     end
     total_likely_damage = total_damage / 2
     return health - total_likely_damage <= 0
+  end
+
+  def in_mob_attack_danger?
+    return true if am_leader? or least_health?
   end
 
   def can_kill?(opponent)
@@ -207,6 +211,10 @@ module Pwned
       return false if opponent.stats[:experience] > experience
     end
     return true
+  end
+
+  def is_in_a_group?(opponent)
+    player_for(opponent).class.method_defined?(:friends)
   end
 
 end
