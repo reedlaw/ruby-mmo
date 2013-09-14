@@ -19,12 +19,30 @@ module Pwned
     attackee = best_opponent_to_kill
     if attackee.nil?
       if alive_opponents.count > reaper_trigger
-        attackee = highest_rated_opponent_from(alive_opponents)
+        if groups_roaming?
+          attackee = highest_rated_opponent_from(grouped_opponents)
+        else
+          attackee = highest_rated_opponent_from(alive_opponents)
+        end
       else
         attackee = opponent_with_least_health
       end
     end
     return attackee
+  end
+
+  def groups_roaming?
+    alive_opponents.each do |opponent|
+      return true if is_in_a_group?(opponent)
+    end
+    return false
+  end
+
+  def grouped_opponents
+    opponents = []
+    alive_opponents.each do |opponent|
+      opponents << opponent if is_in_a_group?(opponent)
+    end
   end
 
   def reaper_trigger
@@ -126,7 +144,6 @@ module Pwned
   end
 
   def should_rest?
-    #return false if health >= max_health
     return true if is_vulnerable? or in_mob_attack_danger?
     return true if best_opponent_to_kill.nil?
     return false
@@ -217,4 +234,18 @@ module Pwned
     player_for(opponent).class.method_defined?(:friends)
   end
 
+  def is_pwned_flesh?
+    true
+  end
+
+end
+
+module PwnedCloneLeft
+  include Pwned
+  def to_s; "__pwned_clone_left"; end
+end
+
+module PwnedCloneRight
+  include Pwned
+  def to_s; "__pwned_clone_right"; end
 end
