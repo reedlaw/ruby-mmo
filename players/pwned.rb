@@ -13,8 +13,7 @@ module Pwned
     end
   end
 
-  private
-
+private
   def opponent_to_attack
     attackee = best_opponent_to_kill
     if attackee.nil?
@@ -75,7 +74,6 @@ module Pwned
     alive_opponents.each do |opponent|
       potential_attackees << opponent if opponent.stats[:health] == min_health
     end
-    #return random_from(potential_attackees)
     return potential_attackees.first
   end
 
@@ -132,7 +130,6 @@ module Pwned
 
   def should_rest?
     return true if is_vulnerable? or in_mob_attack_danger?
-    #return true if best_opponent_to_kill.nil?
     return false
   end
 
