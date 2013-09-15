@@ -41,14 +41,24 @@ private
   end
 
   def grouped_opponents
-    opponents = []
+    potential_attackees = []
     alive_opponents.each do |opponent|
-      opponents << opponent if is_in_a_group?(opponent)
+      if is_in_a_group?(opponent)
+        potential_attackees << opponent
+      end
     end
+    return potential_attackees
   end
 
   def is_in_a_group?(opponent)
-    player_for(opponent).class.method_defined?(:friends)
+    is_grouped =  opponent.respond_to?(:find_new_target) || \
+                  opponent.respond_to?(:set_attack_targets) || \
+                  opponent.respond_to?(:friends) || \
+                  opponent.respond_to?(:trade) || \
+                  opponent.instance_variable_defined?(:@current_friends) || \
+                  opponent.instance_variable_defined?(:@friends) || \
+                  player_for(opponent).class.method_defined?(:friends)
+    return is_grouped
   end
 
   def reaper_trigger
@@ -76,7 +86,9 @@ private
       min_health = opponent.stats[:health] if opponent.stats[:health] < min_health
     end
     alive_opponents.each do |opponent|
-      potential_attackees << opponent if opponent.stats[:health] == min_health
+      if opponent.stats[:health] == min_health
+        potential_attackees << opponent
+      end
     end
     return potential_attackees.first
   end
