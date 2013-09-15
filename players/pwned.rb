@@ -42,9 +42,7 @@ private
 
   def grouped_opponents
     opponents = []
-puts '---------------------->'
     alive_opponents.each do |opponent|
-puts opponent.to_s + ' is in a group? ' + is_in_a_group?(opponent).to_s
       opponents << opponent if is_in_a_group?(opponent)
     end
   end
