@@ -42,9 +42,15 @@ private
 
   def grouped_opponents
     opponents = []
+puts '---------------------->'
     alive_opponents.each do |opponent|
+puts opponent.to_s + ' is in a group? ' + is_in_a_group?(opponent).to_s
       opponents << opponent if is_in_a_group?(opponent)
     end
+  end
+
+  def is_in_a_group?(opponent)
+    player_for(opponent).class.method_defined?(:friends)
   end
 
   def reaper_trigger
@@ -141,6 +147,7 @@ private
   end
 
   def in_mob_attack_danger?
+    return false if experience == 0
     return true if am_leader? or least_health?
   end
 
@@ -197,26 +204,18 @@ private
     return true
   end
 
-  def is_in_a_group?(opponent)
-    player_for(opponent).class.method_defined?(:friends)
-  end
-
 end
 
-module PwnedClone
+module PwnedCloneLeft
   include Pwned
+
+  def to_s; "__pwned_clone_left"; end
 
   def should_rest?
     return true if is_vulnerable? or in_mob_attack_danger?
     return true if alive_opponents.count == 0 # bow to my master
     return false
   end
-end
-
-module PwnedCloneLeft
-  include PwnedClone
-
-  def to_s; "__pwned_clone_left"; end
 
   def my_target_in(opponents)
     opponents[-1]
@@ -224,9 +223,15 @@ module PwnedCloneLeft
 end
 
 module PwnedCloneRight
-  include PwnedClone
+  include Pwned
 
   def to_s; "__pwned_clone_right"; end
+
+  def should_rest?
+    return true if is_vulnerable? or in_mob_attack_danger?
+    return true if alive_opponents.count == 0 # bow to my master
+    return false
+  end
 
   def my_target_in(opponents)
     opponents[1]
