@@ -29,16 +29,9 @@ module Pwned
       end
     end
     if attackee.nil? #should be just me and my clones
-      attackee = brethren_to_kill
-      #attackee = random_from(alive_pwned)
+      attackee = random_from(alive_pwned)
     end
     return attackee
-  end
-
-  def brethren_to_kill
-    raise 'There are still opponents! You have a bug!' if alive_opponents.count > 0
-    clones = Game.world[:players].select{|p| p != self && p.alive }
-    clones.first
   end
 
   def groups_roaming?
@@ -213,15 +206,20 @@ module Pwned
 
 end
 
-module PwnedCloneLeft
+module PwnedClone
   include Pwned
-  def to_s; "__pwned_clone_left"; end
 
   def should_rest?
     return true if is_vulnerable? or in_mob_attack_danger?
     return true if alive_opponents.count == 0 # bow to my master
     return false
   end
+end
+
+module PwnedCloneLeft
+  include PwnedClone
+
+  def to_s; "__pwned_clone_left"; end
 
   def my_target_in(opponents)
     opponents[-1]
@@ -229,14 +227,9 @@ module PwnedCloneLeft
 end
 
 module PwnedCloneRight
-  include Pwned
-  def to_s; "__pwned_clone_right"; end
+  include PwnedClone
 
-  def should_rest?
-    return true if is_vulnerable? or in_mob_attack_danger?
-    return true if alive_opponents.count == 0 # bow to my master
-    return false
-  end
+  def to_s; "__pwned_clone_right"; end
 
   def my_target_in(opponents)
     opponents[1]
