@@ -20,15 +20,25 @@ module Pwned
     if attackee.nil?
       if alive_opponents.count > reaper_trigger
         if groups_roaming?
-          attackee = highest_rated_opponent_from(grouped_opponents)
+          attackee = highest_rated_from(grouped_opponents)
         else
-          attackee = highest_rated_opponent_from(alive_opponents)
+          attackee = highest_rated_from(alive_opponents)
         end
       else
         attackee = opponent_with_least_health
       end
     end
+    if attackee.nil? #should be just me and my clones
+      attackee = brethren_to_kill
+      #attackee = random_from(alive_pwned)
+    end
     return attackee
+  end
+
+  def brethren_to_kill
+    raise 'There are still opponents! You have a bug!' if alive_opponents.count > 0
+    clones = Game.world[:players].select{|p| p != self && p.alive }
+    clones.first
   end
 
   def groups_roaming?
@@ -63,30 +73,6 @@ module Pwned
     return true
   end
 
-  def opponent_with_most_experience
-    max_xp = 0
-    potential_attackees = []
-    alive_opponents.each do |opponent|
-      max_xp = opponent.stats[:experience] if opponent.stats[:experience] > max_xp
-    end
-    alive_opponents.each do |opponent|
-      potential_attackees << opponent if opponent.stats[:experience] == max_xp
-    end
-    return potential_attackees[rand(potential_attackees.count-1)]
-  end
-
-  def opponent_with_most_health
-    max_health = 0
-    potential_attackees = []
-    alive_opponents.each do |opponent|
-      max_health = opponent.stats[:health] if opponent.stats[:health] > max_health
-    end
-    alive_opponents.each do |opponent|
-      potential_attackees << opponent if opponent.stats[:health] == max_health
-    end
-    return potential_attackees[rand(potential_attackees.count-1)]
-  end
-
   def opponent_with_least_health
     min_health = 999999999
     potential_attackees = []
@@ -96,7 +82,8 @@ module Pwned
     alive_opponents.each do |opponent|
       potential_attackees << opponent if opponent.stats[:health] == min_health
     end
-    return potential_attackees[rand(potential_attackees.count-1)]
+    #return random_from(potential_attackees)
+    return potential_attackees.first
   end
 
   def best_opponent_to_kill
@@ -117,16 +104,23 @@ module Pwned
       end
     end
 
-    opponent_count = alive_opponents.count
-    if opponent_count > 20
-      target = random_from(potential_attackees)
-    elsif opponent_count > 5
-      target = second_highest_rated_from(potential_attackees)
-    else
-      target = highest_rated_from(potential_attackees)
+    count = potential_attackees.count
+    if count >= 5
+      potential_attackees.shift
+      potential_attackees.pop
+    elsif count == 4
+      potential_attackees.shift
     end
-
+    target = my_target_in(potential_attackees)
     return target
+  end
+
+  def my_target_in(opponents)
+    opponents[0]
+  end
+
+  def alive_pwned
+    Game.world[:players].select{|p| p.alive && p.to_s =~ /^__pwned/ }
   end
 
   def random_from(opponents)
@@ -145,7 +139,7 @@ module Pwned
 
   def should_rest?
     return true if is_vulnerable? or in_mob_attack_danger?
-    return true if best_opponent_to_kill.nil?
+    #return true if best_opponent_to_kill.nil?
     return false
   end
 
@@ -154,23 +148,6 @@ module Pwned
       return true if could_kill_me?(opponent)
     end
     return false
-  end
-
-  def is_vulnerable_to_mob?
-    hp_left = health
-    alive_opponents.each do |opponent|
-      hp_left -= damage_for(opponent,self)
-    end
-    return hp_left <= 0
-  end
-
-  def is_likely_vulnerable_to_mob?
-    total_damage = 0
-    alive_opponents.each do |opponent|
-      total_damage += damage_for(opponent,self)
-    end
-    total_likely_damage = total_damage / 2
-    return health - total_likely_damage <= 0
   end
 
   def in_mob_attack_danger?
@@ -192,7 +169,7 @@ module Pwned
   end
 
   def alive_opponents
-    Game.world[:players].select{|p| p != self && p.alive }
+    Game.world[:players].select{|p| p != self && p.alive && p.to_s !~ /^__pwned/ }
   end
 
   def health
@@ -234,18 +211,34 @@ module Pwned
     player_for(opponent).class.method_defined?(:friends)
   end
 
-  def is_pwned_flesh?
-    true
-  end
-
 end
 
 module PwnedCloneLeft
   include Pwned
   def to_s; "__pwned_clone_left"; end
+
+  def should_rest?
+    return true if is_vulnerable? or in_mob_attack_danger?
+    return true if alive_opponents.count == 0 # bow to my master
+    return false
+  end
+
+  def my_target_in(opponents)
+    opponents[-1]
+  end
 end
 
 module PwnedCloneRight
   include Pwned
   def to_s; "__pwned_clone_right"; end
+
+  def should_rest?
+    return true if is_vulnerable? or in_mob_attack_danger?
+    return true if alive_opponents.count == 0 # bow to my master
+    return false
+  end
+
+  def my_target_in(opponents)
+    opponents[1]
+  end
 end
