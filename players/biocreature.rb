@@ -130,11 +130,7 @@ module BioCreature
     def fight
       
       kill.nil? ? [:recover] : [:attack]
-      # unless kill.nil?
-      #   [:attack, kill]
-      # else 
-      #   [:recover]
-      # end
+     
     end
 
   end

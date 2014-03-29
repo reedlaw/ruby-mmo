@@ -21,10 +21,6 @@ class Game
       @players.each do |p|
         unless p.kind_of? Monster
           move = p.proxy.move
-          # p "#{p.proxy.move}"
-          # p p.proxy.to_s
-          # p "move"
-          # p move
           m = move.first
           case m
           when :attack
