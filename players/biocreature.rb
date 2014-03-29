@@ -12,10 +12,8 @@ module BioCreature
     @round += 1
 
     if should_fight?
-      p "BioCreature is fighting"
       fight
     else
-      p "BioCreature is recovering"
       recover
     end
 
@@ -31,10 +29,8 @@ module BioCreature
       medium_players = opponents.select{|p| p!=self}.select{|p| killable? p}
 
       if easy_players.count > 0
-        p "easy player loop"
         return easy_players[rand(easy_players.count - 1)]
       elsif medium_players.count > 0
-        p "medium_players loop"
         return medium_players[rand(medium_players.count - 1)]
       end
     end
@@ -87,7 +83,6 @@ module BioCreature
     end
 
     def recover
-      p "BioCreature called recover"
       [:rest]
     end
 
@@ -124,8 +119,8 @@ module BioCreature
       p.stats[:health]
     end
 
-    #fight causing problems, previous code returns nil value as move. 
-    # changed from [:attack, kill] unless.nil? 
+    # fight causing problems, previous code returns nil value as move. 
+    # changed from [:attack, kill] unless kill.nil? 
     # to this conditional that always returns a move.  
     def fight
       
