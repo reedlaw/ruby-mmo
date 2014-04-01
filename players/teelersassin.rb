@@ -1,4 +1,8 @@
 module Danssasin2
+	def to_s
+		"Kill Teeler"
+	end
+
 	def move
 		if find_teeler
 			[:attack, find_teeler ]

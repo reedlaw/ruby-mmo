@@ -1,4 +1,8 @@
 module Danssasins
+	def to_s
+		"Kill Dan"
+	end
+
 	def move
 		if find_dan
 			[:attack, find_dan ]

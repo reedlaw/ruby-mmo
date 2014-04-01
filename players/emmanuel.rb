@@ -14,9 +14,8 @@ module Emmanuel
 
 	private 
 
-	# find players with lowest stats, pick off the weak
 	def rest_conditions
-		hp_danger? && opponents.length >= 5 || top_3
+		hp_danger? && opponents.length >= 3 || top_3
 	end
 
 	def attack_sequence
@@ -32,7 +31,7 @@ module Emmanuel
 	end
 
 	def top_3_xp
-		opponents_array = all_players.sort { |a, b| b.stats[:experience] <=> a.stats[:experience] }.take(opponents.length/2)
+		opponents_array = all_players.sort { |a, b| b.stats[:experience] <=> a.stats[:experience] }.take(opponents.length/4)
 		strings = opponents_array.map(&:to_s)
 	end
 
