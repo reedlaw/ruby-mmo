@@ -124,7 +124,7 @@ module BioCreature
     # to this conditional that always returns a move.  
     def fight
       
-      kill.nil? ? [:recover] : [:attack]
+      kill.nil? ? [:rest] : [:attack]
      
     end
 
