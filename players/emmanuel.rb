@@ -15,7 +15,7 @@ module Emmanuel
 	private 
 
 	def rest_conditions
-		hp_danger? && opponents.length >= 3 || top_3
+		hp_danger? && opponents.length >= 3 || top_quarter
 	end
 
 	def attack_sequence
@@ -26,11 +26,11 @@ module Emmanuel
 		self.stats[:health] < 90
 	end
 
-	def top_3
-		top_3_xp.include?(self.to_s)
+	def top_quarter
+		top_quarter_xp.include?(self.to_s)
 	end
 
-	def top_3_xp
+	def top_quarter_xp
 		opponents_array = all_players.sort { |a, b| b.stats[:experience] <=> a.stats[:experience] }.take(opponents.length/4)
 		strings = opponents_array.map(&:to_s)
 	end
@@ -41,7 +41,6 @@ module Emmanuel
 	
 	def can_kill
 			opponents.select{ |p| damage_to_kill(p) }.sample
-		
 	end
 
 	def damage_to_kill(opponent)
