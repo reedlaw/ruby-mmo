@@ -188,7 +188,7 @@ module Jax
     # and use that to prove authenticity of each message.
     def dank_you_very_much
       other_players.each do |minion|
-        if minion.player.respond_to?(:trade)
+        if minion.player.respond_to?(:trade) && real_dank_chron
           minion.player.trade(:set_target, real_dank_chron.player)
         end
       end

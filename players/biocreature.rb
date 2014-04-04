@@ -21,21 +21,21 @@ module BioCreature
 
   private
 
-    def kill
-      if @round > 80
-        leader
-      else
-        easy_players = opponents.select{|p| p!=self}.select{|p| easyKill? p}
-        medium_players = opponents.select{|p| p!=self}.select{|p| killable? p}
+  def kill
+    if @round > 80
+      leader
+    else
+      easy_players = opponents.select{|p| p!=self}.select{|p| easyKill? p}
+      medium_players = opponents.select{|p| p!=self}.select{|p| killable? p}
 
-        if easy_players.count > 0
-          return easy_players[rand(easy_players.count - 1)]
-        elsif medium_players.count > 0
-          return medium_players[rand(medium_players.count - 1)]
-        end
+      if easy_players.count > 0
+        return easy_players[rand(easy_players.count - 1)]
+      elsif medium_players.count > 0
+        return medium_players[rand(medium_players.count - 1)]
       end
-
     end
+
+  end
 
     # player: the player that you want to know if is killable
     def killable? player
@@ -114,13 +114,18 @@ module BioCreature
     def level(p = self)
       p.stats[:level]
     end
-   
+
     def health(p = self)
       p.stats[:health]
     end
 
+    # fight causing problems, previous code returns nil value as move. 
+    # changed from [:attack, kill] unless kill.nil? 
+    # to this conditional that always returns a move.  
     def fight
-      [:attack, kill] unless kill.nil?
+      
+      kill.nil? ? [:rest] : [:attack]
+     
     end
 
-end
+  end

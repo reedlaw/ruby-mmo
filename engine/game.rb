@@ -94,7 +94,6 @@ class Game
     winner = @proxies.inject(@proxies[0]) {|max, item| item.stats[:experience] > max.stats[:experience] ? item : max }
     puts "#{winner} is the winner!"
 
-
   end
 
   private
