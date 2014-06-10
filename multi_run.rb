@@ -16,10 +16,14 @@ options[:rounds] = 10 unless options[:rounds]
 
 last_line = []
 
-options[:runs].times do
+options[:runs].times do |i|
   output = `ruby ./engine.rb -r #{options[:rounds]}`
   last_line.push output.split("\n").last
+  round = i+1
+  print "\rRound #{round} finished".rjust(30, ' ')
+  STDOUT.flush
 end
+puts ''
 
 winners = Hash.new(0)
 
@@ -28,5 +32,5 @@ last_line.each do |val|
 end
 
 winners.sort_by{|winner, times| -times}.each do |winner, times|
-  puts "#{winner.gsub(' is the winner!', '')} won #{times} times"
+  puts "#{winner.to_s.gsub(' is the winner!', '')} won #{times} times"
 end
