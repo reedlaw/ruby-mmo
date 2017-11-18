@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
-require 'debugger'
 
 def require_dir(dir)
   Dir["#{dir}/*.rb"].each do |file|
