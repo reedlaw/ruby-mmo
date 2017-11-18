@@ -60,52 +60,87 @@ Winners
 
 ### Sprint (`./multi_run.rb -r 1000 -o 10`)
 
-    Valentin won 504 times
-    *noob* won 185 times
-    Izidor won 116 times
-    strax won 82 times
-    Angry Mamay won 68 times
-    KurSe won 34 times
-    Minion agent won 10 times
-    Dan Knox agent won 1 times
+    Jbttn won 388 times
+    Valentin won 251 times
+    *noob* won 100 times
+    strax won 73 times
+    Angry Mamay won 64 times
+    Izidor won 37 times
+    Lachesis won 26 times
+    Clotho won 18 times
+    Atropos won 18 times
+    Jax won 16 times
+    __pwned_clone_left won 4 times
+    Van Diagram won 3 times
+    Z Cloud Strife won 1 times
+    limekin won 1 times
 
 ### Race (`./multi_run.rb -r 1000 -o 100`)
 
-    david k won 323 times
-    Rogue Leader won 235 times
-    flipback won 222 times
-    Eric the Kill Steal won 84 times
-    Dan Knox agent won 40 times
-    Minion agent won 28 times
-    A Tabby Cat won 19 times
-    Ian Terrell won 14 times
-    Cossack Mamay won 8 times
-    david k2 won 8 times
-    strax won 4 times
+    Chuck Norris won 181 times
+    __pwned won 90 times
+    flipback won 82 times
+    Eric the Kill Steal won 76 times
+    Atropos won 66 times
+    __pwned_clone_right won 65 times
+    Z Cloud Strife won 61 times
+    Jax won 47 times
+    Clotho won 47 times
+    __pwned_clone_left won 42 times
+    Emmanuel, the new guy won 42 times
+    Lachesis won 39 times
+    Van Diagram won 37 times
+    Izidor won 37 times
+    strax won 13 times
+    | Drowsy Leo | won 12 times
+    Rogue Leader won 12 times
+    limekin won 11 times
+    Michael won 7 times
+    *noob* won 5 times
+    rots won 5 times
     *No rest for the wicked* won 4 times
-    Izidor won 4 times
-    South Pole Steve won 3 times
-    Chuck Norris won 1 times
-    Raiko won 1 times
-    rots won 1 times
-    | Drowsy Leo | won 1 times
+    Angry Mamay won 4 times
+    Ian Terrell won 3 times
+    Cossack Mamay won 3 times
+    Jayaram won 2 times
+    Teeler won 2 times
+    Jack won 2 times
+    South Pole Steve won 1 times
+    A Tabby Cat won 1 times
+    Sir Samsonite won 1 times
 
 ### Endurance (`./multi_run.rb -r 1000 -o 1000`)
 
-    david k won 292 times
-    flipback won 250 times
-    Rogue Leader won 235 times
-    Eric the Kill Steal won 76 times
-    Dan Knox agent won 47 times
-    Minion agent won 36 times
-    A Tabby Cat won 20 times
-    Ian Terrell won 18 times
-    david k2 won 7 times
-    Cossack Mamay won 4 times
-    South Pole Steve won 4 times
-    strax won 3 times
-    *No rest for the wicked* won 3 times
-    Jayaram won 2 times
-    Raiko won 1 times
-    rots won 1 times
-    Izidor won 1 times
+    Chuck Norris won 158 times
+    Eric the Kill Steal won 123 times
+    Z Cloud Strife won 118 times
+    Lachesis won 69 times
+    Atropos won 66 times
+    flipback won 66 times
+    __pwned won 53 times
+    __pwned_clone_right won 47 times
+    Clotho won 39 times
+    Emmanuel, the new guy won 39 times
+    __pwned_clone_left won 32 times
+    Van Diagram won 32 times
+    Izidor won 29 times
+    Jax won 22 times
+    Michael won 18 times
+    | Drowsy Leo | won 15 times
+    limekin won 15 times
+    Ian Terrell won 10 times
+    Rogue Leader won 10 times
+    *No rest for the wicked* won 8 times
+    Angry Mamay won 5 times
+    strax won 4 times
+    rots won 4 times
+    *noob* won 4 times
+    Sir Samsonite won 3 times
+    Teeler won 3 times
+    Jack won 2 times
+    Dan Knox won 1 times
+    Crazy Carl won 1 times
+    Jayaram won 1 times
+    Cossack Mamay won 1 times
+    South Pole Steve won 1 times
+    A Tabby Cat won 1 times
